@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ModMetaData>
+  <name>RimTwitch</name>
+  <author>hodlhodl</author>
+  <supportedVersions>
+    <li>1.1</li>
+  </supportedVersions>
+  <packageId>hodlhodl.rimtwitch</packageId>
+  <description>...</description>
+</ModMetaData>
