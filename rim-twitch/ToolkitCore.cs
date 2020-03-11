@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
-namespace rim_twitch
+namespace ToolkitCore
 {
-    public class RimTwitch : Mod
+    public class ToolkitCore : Mod
     {
-        RimTwitchSettings settings;
+        ToolkitCoreSettings settings;
 
-        public RimTwitch(ModContentPack content) : base(content)
+        public ToolkitCore(ModContentPack content) : base(content)
         {
-            settings = GetSettings<RimTwitchSettings>();
+            settings = GetSettings<ToolkitCoreSettings>();
         }
 
-        public override string SettingsCategory() => "RimTwitch";
+        public override string SettingsCategory() => "ToolkitCore";
 
         public override void DoSettingsWindowContents(Rect inRect)
         {
@@ -31,8 +31,7 @@ namespace rim_twitch
     {
         static Startup()
         {
-            if (RimTwitchSettings.connectOnGameStartup)
-                ThreadWorker.StartThread();
+            ThreadWorker.StartThread();
         }
     }
 }

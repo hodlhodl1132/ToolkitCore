@@ -7,8 +7,8 @@
     <ProjectGuid>{4151F06C-C71C-4785-BF80-BEBAAD400FFD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>rim_twitch</RootNamespace>
-    <AssemblyName>rim-twitch</AssemblyName>
+    <RootNamespace>ToolkitCore</RootNamespace>
+    <AssemblyName>ToolkitCore</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\RimTwitch\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -65,9 +65,9 @@
   <ItemGroup>
     <Compile Include="MessageQueue.cs" />
     <Compile Include="TwitchWrapper.cs" />
-    <Compile Include="RimTwitch.cs" />
+    <Compile Include="ToolkitCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RimTwitchSettings.cs" />
+    <Compile Include="ToolkitCoreSettings.cs" />
     <Compile Include="ThreadWorker.cs" />
     <Compile Include="TwitchInterfaceBase.cs" />
   </ItemGroup>

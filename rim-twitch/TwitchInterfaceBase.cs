@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TwitchLib.Client.Models;
 using Verse;
 
-namespace rim_twitch
+namespace ToolkitCore
 {
     public abstract class TwitchInterfaceBase : GameComponent
     {

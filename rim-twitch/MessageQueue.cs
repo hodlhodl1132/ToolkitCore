@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace rim_twitch
+namespace ToolkitCore
 {
     public static class MessageQueue
     {
