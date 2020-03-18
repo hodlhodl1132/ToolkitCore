@@ -14,3 +14,9 @@ rim-twitch/obj/Release/ToolkitCore.csproj.FileListAbsolute.txt
 rim-twitch/obj/Release/ToolkitCore.csproj.CoreCompileInputs.cache
 rim-twitch/obj/Release/DesignTimeResolveAssemblyReferencesInput.cache
 rim-twitch/obj/Release/ToolkitCore.dll
+*.cs
+.vs/toolkit-core/v15/.suo
+.vs/toolkit-core/v15/Server/sqlite3/db.lock
+.vs/toolkit-core/v15/Server/sqlite3/storage.ide
+.vs/toolkit-core/v15/Server/sqlite3/storage.ide-shm
+.vs/toolkit-core/v15/Server/sqlite3/storage.ide-wal
