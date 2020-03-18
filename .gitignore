@@ -20,3 +20,4 @@ rim-twitch/obj/Release/ToolkitCore.dll
 .vs/toolkit-core/v15/Server/sqlite3/storage.ide
 .vs/toolkit-core/v15/Server/sqlite3/storage.ide-shm
 .vs/toolkit-core/v15/Server/sqlite3/storage.ide-wal
+toolkitcore/obj/Release/ToolkitCore.csproj.FileListAbsolute.txt
