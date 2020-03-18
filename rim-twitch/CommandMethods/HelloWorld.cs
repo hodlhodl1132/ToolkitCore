@@ -19,7 +19,7 @@ namespace ToolkitCore.CommandMethods
         {
             if (!base.CanExecute(message)) return false;
 
-            if (true) return true;
+            return true;
         }
 
         public override void Execute(ChatCommand chatCommand)
