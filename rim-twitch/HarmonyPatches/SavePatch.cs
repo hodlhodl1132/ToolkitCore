@@ -24,7 +24,6 @@ namespace ToolkitCore.HarmonyPatches
 
         static void SaveGame_PostFix()
         {
-            Log.Message("Saving Data");
             Database.DatabaseController.SaveToolkit();
             ToolkitData.globalDatabase.Write();
         }

@@ -43,9 +43,25 @@ namespace ToolkitCore.Models
 
         public UserType UserType;
 
+        public Viewer()
+        {
+
+        }
+
         public Viewer(string username)
         {
             this.Username = username;
+        }
+
+        public Viewer(string Username = null, string DisplayName = null, string UserId = null, bool IsBroadcaster = false, bool IsBot = false, bool IsModerator = false, bool IsSubscriber = false)
+        {
+            this.Username = Username;
+            this.DisplayName = DisplayName;
+            this.UserId = UserId;
+            this.IsBroadcaster = IsBroadcaster;
+            this.IsBot = IsBot;
+            this.IsModerator = IsModerator;
+            this.IsSubscriber = IsSubscriber;
         }
 
         public void ExposeData()
@@ -87,8 +103,6 @@ namespace ToolkitCore.Models
                 lock (Viewers.All)
                 {
                     if (!Viewers.All.Contains(this)) Viewers.All.Add(this);
-
-                    Log.Message($"Viewers Instance now containts collection of {Viewers.All.Count} viewers");
                 }
             }
         }

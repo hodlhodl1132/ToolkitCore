@@ -71,11 +71,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandMethods\HelloWorld.cs" />
+    <Compile Include="Controllers\ChatCommandController.cs" />
     <Compile Include="Controllers\ViewerController.cs" />
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Database\GlobalDatabase.cs" />
     <Compile Include="HarmonyPatches\SavePatch.cs" />
     <Compile Include="MessageQueue.cs" />
+    <Compile Include="Models\ChatCommand.cs" />
+    <Compile Include="Models\CommandMethod.cs" />
     <Compile Include="Models\Viewer.cs" />
     <Compile Include="TwitchWrapper.cs" />
     <Compile Include="ToolkitCore.cs" />
@@ -89,6 +93,9 @@
     <Content Include="About\About.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Defs\Commands\Commands.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>

@@ -19,8 +19,6 @@ namespace ToolkitCore.Utilities
 
         public override void ParseCommand(ChatMessage msg)
         {
-            Log.Message($"{msg.DisplayName}: {msg.Message}");
-
             ViewerController.GetViewer(msg.Username).UpdateViewerFromMessage(msg);
         }
     }

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using ToolkitCore.Controllers;
+using ToolkitCore.Models;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Models;
@@ -88,6 +90,7 @@ namespace ToolkitCore
             Client.OnJoinedChannel += OnJoinedChannel;
             Client.OnMessageReceived += OnMessageReceived;
             Client.OnWhisperReceived += OnWhisperReceived;
+            Client.OnChatCommandReceived += OnChatCommandReceived;
 
             Client.Connect();
         }
@@ -113,6 +116,15 @@ namespace ToolkitCore
             foreach (TwitchInterfaceBase receiver in receivers)
             {
                 receiver.ParseCommand(e.ChatMessage);
+            }
+        }
+
+        private void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
+        {
+            ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
+            if (chatCommand != null)
+            {
+                chatCommand.TryExecute(e.Command);
             }
         }
     }
