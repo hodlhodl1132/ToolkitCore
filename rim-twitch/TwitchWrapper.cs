@@ -97,16 +97,16 @@ namespace ToolkitCore
             
         }
 
-        private void OnConnected(object sender, TwitchLib.Client.Events.OnConnectedArgs e)
+        private void OnConnected(object sender, OnConnectedArgs e)
         {
         }
 
-        private void OnJoinedChannel(object sender, TwitchLib.Client.Events.OnJoinedChannelArgs e)
+        private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
             Client.SendMessage(e.Channel, "Toolkit Core has Connected to Chat");
         }
 
-        private void OnMessageReceived(object sender, TwitchLib.Client.Events.OnMessageReceivedArgs e)
+        private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
             List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
 

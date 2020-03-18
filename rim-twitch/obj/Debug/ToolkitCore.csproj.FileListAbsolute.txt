@@ -9,3 +9,5 @@ C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\About\Ab
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\ToolkitCore.dll
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\ToolkitCore.pdb
 C:\Users\donav\source\repos\rim-twitch\rim-twitch\obj\Debug\ToolkitCore.csprojAssemblyReference.cache
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\ToolkitCore.dll.config
+C:\Users\donav\source\repos\rim-twitch\rim-twitch\obj\Debug\ToolkitCore.g.resources
