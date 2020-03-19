@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ToolkitCore.Models.ToolkitChatCommand>
+    <defName>HelloWorld</defName>
+    <commandText>hello</commandText>
+    <enabled>true</enabled>
+    <commandClass>ToolkitCore.CommandMethods.HelloWorld</commandClass>
+    <requiresMod>false</requiresMod>
+    <requiresBroadcaster>true</requiresBroadcaster>
+  </ToolkitCore.Models.ToolkitChatCommand>
+</Defs>
