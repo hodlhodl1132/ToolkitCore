@@ -24,7 +24,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\</OutputPath>
+    <OutputPath>lib\net472\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -65,11 +65,17 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Using ContentWithTargetPath+TargetPath rather than Content+Link because the latter apparently must have the Link path be within OutputDir -->
-    <ContentWithTargetPath Include="About\**\*;Defs\**\*">
+    <ContentWithTargetPath Include="About\About.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <TargetPath>..\%(RelativeDir)%(Filename)%(Extension)</TargetPath>
+      <TargetPath>..\About\About.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="Defs\Commands\Commands.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\Defs\Commands\Commands.xml</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ToolkitCore.nuspec" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -102,15 +102,15 @@ namespace ToolkitCore
 
         public override void ExposeData()
         {
-            Scribe_Values.Look<string>(ref channel_username, "channel_username", "", true);
-            Scribe_Values.Look<string>(ref bot_username, "bot_username", "", true);
-            Scribe_Values.Look<string>(ref oauth_token, "oauth_token", "", true);
-            Scribe_Values.Look<bool>(ref connectOnGameStartup, "connectOnGameStartup", true);
+            Scribe_Values.Look(ref channel_username, "channel_username", "", true);
+            Scribe_Values.Look(ref bot_username, "bot_username", "", true);
+            Scribe_Values.Look(ref oauth_token, "oauth_token", "", true);
+            Scribe_Values.Look(ref connectOnGameStartup, "connectOnGameStartup", true);
         }
 
         bool showOauth = false;
 
-        static float verticalHeight = 32f;
-        static float verticalSpacing = 40f;
+        static readonly float verticalHeight = 32f;
+        static readonly float verticalSpacing = 40f;
     }
 }
