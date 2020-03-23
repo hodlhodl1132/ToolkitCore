@@ -49,54 +49,6 @@ namespace ToolkitCore
 
             ls.CheckboxLabeled("Auto Connect Client on Startup", ref connectOnGameStartup, "Allow the Twitch Client to connect immediately upon entering the main menu");
 
-            if (channel_username != "" && bot_username != "" && oauth_token != "")
-            {
-                if (ThreadWorker.stayConnected && TwitchWrapper.Client != null && TwitchWrapper.Client.IsConnected)
-                {
-                    if (ls.ButtonTextLabeled("Disconnect Client", "Disconnect"))
-                    {
-                        ThreadWorker.stayConnected = false;
-                    }
-                }
-                else
-                {
-                    if (ls.ButtonTextLabeled("Connect Client", "Connect"))
-                    {
-                        ThreadWorker.stayConnected = true;
-                        ToolkitCoreSettings.connectOnGameStartup = true;
-                    }
-                }
-            }
-
-            if (Prefs.DevMode)
-            {
-                if (ThreadWorker.runThread)
-                {
-                    if (ls.ButtonTextLabeled("Stop Thread", "Stop"))
-                    {
-                        ThreadWorker.runThread = false;
-                    }
-                }
-                else
-                {
-                    if (ls.ButtonTextLabeled("Start Thread", "Start"))
-                    {
-                        ThreadWorker.runThread = true;
-                        ThreadWorker.StartThread();
-                    }
-                }
-
-                ls.Label($"Stay Connected: {ThreadWorker.stayConnected} - Run Thread: {ThreadWorker.runThread} - Debug MSG: {ThreadWorker.sendDebugMSG}");
-
-                if (TwitchWrapper.Client != null)
-                    ls.Label($"Initialized: {TwitchWrapper.Client.IsInitialized} - Connected: {TwitchWrapper.Client.IsConnected}");
-
-                if (!ThreadWorker.sendDebugMSG && ls.ButtonTextLabeled("Send DEBUG Message", "Send"))
-                {
-                    ThreadWorker.sendDebugMSG = true;
-                }
-            }
-
             ls.End();
         }
 

@@ -42,7 +42,7 @@ namespace ToolkitCore
     {
         static Startup()
         {
-            ThreadWorker.StartThread();
+            TwitchWrapper.StartAsync();
         }
     }
 }

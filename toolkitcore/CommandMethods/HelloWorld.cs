@@ -24,7 +24,7 @@ namespace ToolkitCore.CommandMethods
 
         public override void Execute(ChatCommand chatCommand)
         {
-            MessageQueue.messageQueue.Enqueue("Hello World!");
+            TwitchWrapper.SendChatMessage("Hello World!");
         }
     }
 }
