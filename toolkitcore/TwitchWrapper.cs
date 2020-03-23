@@ -15,16 +15,16 @@ using Verse;
 
 namespace ToolkitCore
 {
-    public class TwitchWrapper : MonoBehaviour
+    public static class TwitchWrapper
     {
         public static TwitchClient Client { get; private set; }
 
         public static void StartAsync()
         {
-            new TwitchWrapper().Initialize(new ConnectionCredentials(ToolkitCoreSettings.bot_username, ToolkitCoreSettings.oauth_token));
+            TwitchWrapper.Initialize(new ConnectionCredentials(ToolkitCoreSettings.bot_username, ToolkitCoreSettings.oauth_token));
         }
 
-        public void Initialize(ConnectionCredentials credentials)
+        public static void Initialize(ConnectionCredentials credentials)
         {
             ResetClient();
 
@@ -34,7 +34,7 @@ namespace ToolkitCore
             }
         }
 
-        private void ResetClient()
+        private static void ResetClient()
         {
             if (Client != null)
             {
@@ -52,7 +52,7 @@ namespace ToolkitCore
             Client = new TwitchClient(customClient);
         }
 
-        private void InitializeClient(ConnectionCredentials credentials)
+        private static void InitializeClient(ConnectionCredentials credentials)
         {
             // Initialize the client with the credentials instance, and setting a default channel to connect to.
             Client.Initialize(credentials, ToolkitCoreSettings.channel_username);
@@ -67,21 +67,21 @@ namespace ToolkitCore
             Client.Connect();
         }
 
-        private void OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
+        private static void OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
             
         }
 
-        private void OnConnected(object sender, OnConnectedArgs e)
+        private static void OnConnected(object sender, OnConnectedArgs e)
         {
         }
 
-        private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
+        private static void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
             Client.SendMessage(e.Channel, "Toolkit Core has Connected to Chat");
         }
 
-        private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
+        private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
             Log.Message($"{e.ChatMessage.DisplayName}: {e.ChatMessage.Message}");
 
@@ -93,7 +93,7 @@ namespace ToolkitCore
             }
         }
 
-        private void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
+        private static void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
             Log.Message($"{e.Command.ChatMessage.DisplayName}: {e.Command.ChatMessage.Message}");
 
