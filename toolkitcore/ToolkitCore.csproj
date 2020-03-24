@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\</OutputPath>
+    <OutputPath>C:\Program Files %28x86%29\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -90,6 +90,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>nuget pack $(ProjectDir)ToolkitCore.nuspec -OutputDirectory $(ProjectDir)</PostBuildEvent>
+    <NuGetCommandLineVersion>5.4.0</NuGetCommandLineVersion>
+    <PostBuildEvent>$(NuGetPackageFolders)nuget.commandline\$(NuGetCommandLineVersion)\tools\nuget.exe pack $(ProjectDir)ToolkitCore.nuspec -OutputDirectory $(ProjectDir)</PostBuildEvent>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.CommandLine" Version="$(NuGetCommandLineVersion)" />
+  </ItemGroup>
 </Project>
