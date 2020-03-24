@@ -1,9 +1,5 @@
 .vs/
 bin/
 obj/
-toolkitcore/Rimworld.Toolkit.Core.1.0.0.nupkg
-toolkitcore/lib/net472/TwitchLib.Communication.dll
-toolkitcore/lib/net472/TwitchLib.Client.Models.dll
-toolkitcore/lib/net472/TwitchLib.Client.Enums.dll
-toolkitcore/lib/net472/TwitchLib.Client.dll
-toolkitcore/lib/net472/ToolkitCore.dll
+*.nupkg
+toolkitcore/lib/*
