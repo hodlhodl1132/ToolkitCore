@@ -122,9 +122,14 @@ namespace ToolkitCore
         private void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
             ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
-            if (chatCommand != null)
+
+            try
             {
-                chatCommand.TryExecute(e.Command);
+                chatCommand?.TryExecute(e.Command);
+            }
+            catch (Exception exception)
+            {
+                Log.Error($"Execution of command \"{e.Command.CommandText}\" failed with message {exception.Message}\n{exception.StackTrace}");
             }
         }
     }
