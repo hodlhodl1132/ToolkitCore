@@ -7,6 +7,7 @@ using ToolkitCore.Controllers;
 using ToolkitCore.Models;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
+using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
 using TwitchLib.Communication.Clients;
 using TwitchLib.Communication.Models;
@@ -100,7 +101,7 @@ namespace ToolkitCore
             ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
             if (chatCommand != null)
             {
-                chatCommand.TryExecute(e.Command);
+                chatCommand.TryExecute(e.Command as ITwitchCommand);
             }
         }
 
