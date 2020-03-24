@@ -11,4 +11,7 @@
           <group targetFramework=".NETFramework4.7.2" />
         </dependencies>
     </metadata>
+    <files>
+      <file src="C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\**" target="lib\net472" />
+    </files>
 </package>
