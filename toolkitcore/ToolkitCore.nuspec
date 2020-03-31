@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>HodlHodl.Rimworld.Toolkit.Core</id>
+        <version>1.0.1</version>
+        <description>ToolkitCore provides a framework for receiving/sending messages through Twitch Chat Websockets in Rimworld.</description>
+        <authors>HodlHodl</authors>
+        <license type="expression">MIT</license>
+        <language>en-US</language>
+        <dependencies>
+          <group targetFramework=".NETFramework4.7.2" />
+        </dependencies>
+    </metadata>
+    <files>
+      <file src="C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\ToolkitCore\Assemblies\**" target="lib\net472" />
+    </files>
+</package>

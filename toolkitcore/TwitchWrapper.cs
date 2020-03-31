@@ -7,6 +7,7 @@ using ToolkitCore.Controllers;
 using ToolkitCore.Models;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
+using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
 using TwitchLib.Communication.Clients;
 using TwitchLib.Communication.Models;
@@ -15,54 +16,26 @@ using Verse;
 
 namespace ToolkitCore
 {
-    public class TwitchWrapper : MonoBehaviour
+    public static class TwitchWrapper
     {
         public static TwitchClient Client { get; private set; }
 
-        public void Initialize(ConnectionCredentials credentials)
+        public static void StartAsync()
         {
-            AutoResetEvent eventHandler = new AutoResetEvent(false);
+            TwitchWrapper.Initialize(new ConnectionCredentials(ToolkitCoreSettings.bot_username, ToolkitCoreSettings.oauth_token));
+        }
 
+        public static void Initialize(ConnectionCredentials credentials)
+        {
             ResetClient();
 
             if (ToolkitCoreSettings.connectOnGameStartup)
             {
                 InitializeClient(credentials);
             }
-
-            wait: eventHandler.WaitOne(250);
-
-                if (ThreadWorker.stayConnected == false && Client.IsConnected)
-                {
-                    Client.Disconnect();
-                    eventHandler.WaitOne(2000);
-                }
-                else if (ThreadWorker.stayConnected == true && !Client.IsConnected)
-                {
-                    ResetClient();
-                    eventHandler.WaitOne(500);
-                    InitializeClient(credentials);
-                    eventHandler.WaitOne(2000);
-                }
-
-                if (!Client.IsConnected && ThreadWorker.runThread) goto wait;
-
-                if (ThreadWorker.sendDebugMSG)
-                {
-                    ThreadWorker.sendDebugMSG = false;
-                    Client.SendMessage(Client.JoinedChannels.First(), "This is a test message");
-                }
-
-                if (MessageQueue.messageQueue.Count > 0)
-                {
-                    MessageQueue.messageQueue.TryDequeue(out string messageToSend);
-                    Client.SendMessage(Client.GetJoinedChannel(ToolkitCoreSettings.channel_username), messageToSend);
-                }
-
-                if (ThreadWorker.runThread)  goto wait;
         }
 
-        private void ResetClient()
+        private static void ResetClient()
         {
             if (Client != null)
             {
@@ -80,7 +53,7 @@ namespace ToolkitCore
             Client = new TwitchClient(customClient);
         }
 
-        private void InitializeClient(ConnectionCredentials credentials)
+        private static void InitializeClient(ConnectionCredentials credentials)
         {
             // Initialize the client with the credentials instance, and setting a default channel to connect to.
             Client.Initialize(credentials, ToolkitCoreSettings.channel_username);
@@ -95,22 +68,24 @@ namespace ToolkitCore
             Client.Connect();
         }
 
-        private void OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
+        private static void OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
             
         }
 
-        private void OnConnected(object sender, OnConnectedArgs e)
+        private static void OnConnected(object sender, OnConnectedArgs e)
         {
         }
 
-        private void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
+        private static void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
             Client.SendMessage(e.Channel, "Toolkit Core has Connected to Chat");
         }
 
-        private void OnMessageReceived(object sender, OnMessageReceivedArgs e)
+        private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
+            Log.Message($"{e.ChatMessage.DisplayName}: {e.ChatMessage.Message}");
+
             List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
 
             foreach (TwitchInterfaceBase receiver in receivers)
@@ -119,14 +94,21 @@ namespace ToolkitCore
             }
         }
 
-        private void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
+        private static void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
+            Log.Message($"{e.Command.ChatMessage.DisplayName}: {e.Command.ChatMessage.Message}");
+
             ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
 
             if (chatCommand != null)
             {
-                chatCommand.TryExecute(e.Command);
+                chatCommand.TryExecute(e.Command as ITwitchCommand);
             }
+        }
+
+        public static void SendChatMessage(string message)
+        {
+            Client.SendMessage(Client.GetJoinedChannel(ToolkitCoreSettings.channel_username), message);
         }
     }
 }

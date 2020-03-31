@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using ToolkitCore.Utilities;
+using UnityEngine;
 using Verse;
 
 namespace ToolkitCore
@@ -8,104 +10,107 @@ namespace ToolkitCore
         public static string channel_username = "";
         public static string bot_username = "";
         public static string oauth_token = "";
-        public static bool hideOauth = true;
 
         public static bool connectOnGameStartup = false;        
 
-        public void DoWindowContents(Rect rect)
+        public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard ls = new Listing_Standard();
-            ls.Begin(rect);
+            Rect channelDetails = new Rect(0f, verticalSpacing, inRect.width, 64f);
+            Widgets.Label(channelDetails, TCText.BigText("Channel Details"));
 
-            ls.Label("It is recommended to have a separate account for bot responses. You can use the your twitch channel account as the bot. The Oauth Token must come from the account set for the Bot. The Bot account should have mod status to limit issues.");
+            float sectionVertical = channelDetails.y + (verticalSpacing * 2f);
 
-            channel_username = ls.TextEntryLabeled("Twitch Channel Username: ", channel_username);
+            Rect label = new Rect(0f, sectionVertical, 200f, verticalHeight);
+            Widgets.Label(label, "Channel:");
 
-            bot_username = ls.TextEntryLabeled("Bot Username: ", bot_username);
+            label.y += verticalSpacing;
 
-            if (hideOauth)
+            Widgets.Label(label, "Bot Username:");
+
+            label.y += verticalSpacing;
+
+            Widgets.Label(label, "OAuth Token:");
+
+            Rect input = new Rect(200f, sectionVertical, 200f, verticalHeight);
+
+            channel_username = Widgets.TextField(input, channel_username);
+
+            input.y += verticalSpacing;
+
+            bot_username = Widgets.TextField(input, bot_username);
+
+            input.y += verticalSpacing;
+
+            Rect oauthToggle = new Rect(input.x + input.width + 10f, input.y, 60f, verticalHeight);
+
+            if (showOauth)
             {
-                ls.Label("<color=red>WARNING</color>: Do not show your Oauth Token on Stream");
+                oauth_token = Widgets.TextField(input, oauth_token);
 
-                if (ls.ButtonTextLabeled("Only show Oauth if this screen is not visible to stream", "Show Oauth"))
-                {
-                    hideOauth = false;
-                }
+                if (Widgets.ButtonText(oauthToggle, "Hide")) showOauth = !showOauth;
             }
             else
             {
-                oauth_token = ls.TextEntryLabeled("Oauth Token:", oauth_token);
+                Widgets.Label(input, new string('*', Math.Min(oauth_token.Length, 16)));
 
-                if (ls.ButtonTextLabeled("Need a new Oauth Token?", "Oauth Token"))
-                {
-                    Application.OpenURL("https://www.twitchapps.com/tmi/");
-                }
-
-                if (ls.ButtonTextLabeled("Hide My Oauth Token", "Hide Oauth"))
-                {
-                    hideOauth = true;
-                }
+                if (Widgets.ButtonText(oauthToggle, "Show")) showOauth = !showOauth;
             }
 
-            ls.CheckboxLabeled("Auto Connect Client on Startup", ref connectOnGameStartup, "Allow the Twitch Client to connect immediately upon entering the main menu");
+            Rect newToken = new Rect(500f, input.y, 140f, verticalHeight);
 
-            if (channel_username != "" && bot_username != "" && oauth_token != "")
+            if (Widgets.ButtonText(newToken, "New OAuth Token")) Application.OpenURL("https://www.twitchapps.com/tmi/");
+
+            input.y += verticalSpacing;
+
+            if (Widgets.ButtonText(input, "Paste from Clipboard")) oauth_token = GUIUtility.systemCopyBuffer;
+
+            // Connection
+
+            Rect connectionDetails = new Rect(0f, input.y + (verticalSpacing * 2), inRect.width, 64f);
+            Widgets.Label(connectionDetails, TCText.BigText("Connection"));
+
+            sectionVertical = connectionDetails.y + (verticalSpacing * 2f);
+
+            label.y = sectionVertical;
+            input.y = sectionVertical;
+
+            Widgets.Label(label, "Status:");
+
+            Rect connectionButton = new Rect(input.x, input.y + verticalSpacing, input.width, verticalHeight);
+
+            if (TwitchWrapper.Client.IsConnected)
             {
-                if (ThreadWorker.stayConnected && TwitchWrapper.Client != null && TwitchWrapper.Client.IsConnected)
-                {
-                    if (ls.ButtonTextLabeled("Disconnect Client", "Disconnect"))
-                    {
-                        ThreadWorker.stayConnected = false;
-                    }
-                }
-                else
-                {
-                    if (ls.ButtonTextLabeled("Connect Client", "Connect"))
-                    {
-                        ThreadWorker.stayConnected = true;
-                        ToolkitCoreSettings.connectOnGameStartup = true;
-                    }
-                }
-            }
+                Widgets.Label(input, TCText.ColoredText("Connected", Color.green));
 
-            if (Prefs.DevMode)
+                if (Widgets.ButtonText(connectionButton, "Disconnect")) TwitchWrapper.Client.Disconnect();
+            }
+            else
             {
-                if (ThreadWorker.runThread)
-                {
-                    if (ls.ButtonTextLabeled("Stop Thread", "Stop"))
-                    {
-                        ThreadWorker.runThread = false;
-                    }
-                }
-                else
-                {
-                    if (ls.ButtonTextLabeled("Start Thread", "Start"))
-                    {
-                        ThreadWorker.runThread = true;
-                        ThreadWorker.StartThread();
-                    }
-                }
+                Widgets.Label(input, TCText.ColoredText("Not Connected", Color.red));
 
-                ls.Label($"Stay Connected: {ThreadWorker.stayConnected} - Run Thread: {ThreadWorker.runThread} - Debug MSG: {ThreadWorker.sendDebugMSG}");
-
-                if (TwitchWrapper.Client != null)
-                    ls.Label($"Initialized: {TwitchWrapper.Client.IsInitialized} - Connected: {TwitchWrapper.Client.IsConnected}");
-
-                if (!ThreadWorker.sendDebugMSG && ls.ButtonTextLabeled("Send DEBUG Message", "Send"))
-                {
-                    ThreadWorker.sendDebugMSG = true;
-                }
+                if (Widgets.ButtonText(connectionButton, "Connect")) TwitchWrapper.StartAsync();
             }
 
-            ls.End();
+            label.y += verticalSpacing * 2;
+
+            Widgets.Label(label, "Auto Connect on Startup:");
+
+            input.y = label.y;
+
+            Widgets.Checkbox(input.position, ref connectOnGameStartup);
         }
 
         public override void ExposeData()
         {
-            Scribe_Values.Look<string>(ref channel_username, "channel_username", "", true);
-            Scribe_Values.Look<string>(ref bot_username, "bot_username", "", true);
-            Scribe_Values.Look<string>(ref oauth_token, "oauth_token", "", true);
-            Scribe_Values.Look<bool>(ref connectOnGameStartup, "connectOnGameStartup", true);
+            Scribe_Values.Look(ref channel_username, "channel_username", "", true);
+            Scribe_Values.Look(ref bot_username, "bot_username", "", true);
+            Scribe_Values.Look(ref oauth_token, "oauth_token", "", true);
+            Scribe_Values.Look(ref connectOnGameStartup, "connectOnGameStartup", true);
         }
+
+        bool showOauth = false;
+
+        static readonly float verticalHeight = 32f;
+        static readonly float verticalSpacing = 40f;
     }
 }

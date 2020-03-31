@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TwitchLib.Client.Enums;
+using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
 using Verse;
 
@@ -21,15 +22,15 @@ namespace ToolkitCore.Models
 
         public bool requiresBroadcaster;
 
-        public bool TryExecute(ChatCommand chatCommand)
+        public bool TryExecute(ITwitchCommand twitchCommand)
         {
             try
             {
                 CommandMethod method = (CommandMethod)Activator.CreateInstance(commandClass, this);
 
-                if (!method.CanExecute(chatCommand)) return false;
+                if (!method.CanExecute(twitchCommand)) return false;
 
-                method.Execute(chatCommand);
+                method.Execute(twitchCommand);
             }
             catch (Exception e)
             {
