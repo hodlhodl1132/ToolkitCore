@@ -12,7 +12,16 @@ namespace ToolkitCore.Controllers
     {
         public static ToolkitChatCommand GetChatCommand(string commandText)
         {
-            return DefDatabase<ToolkitChatCommand>.AllDefs.ToList().Find(cc => string.Equals(cc.commandText, commandText, StringComparison.InvariantCultureIgnoreCase));
+            var baseCommand = Parse(commandText).FirstOrDefault();
+
+            if (baseCommand == null)
+            {
+                return null;
+            }
+
+            return DefDatabase<ToolkitChatCommand>.AllDefsListForReading.FirstOrDefault(
+                c => c.commandText.EqualsIgnoreCase(baseCommand)
+            );
         }
 
         public static IEnumerable<string> Parse(string input, string prefix = "!")
