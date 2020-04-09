@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -97,11 +97,6 @@ namespace ToolkitCore.Controllers
             }
 
             return cache.ToArray();
-        }
-
-        public static List<KeyValuePair<string, string>> ParseKeyed(string input, string prefix = "!")
-        {
-            return ParseKeyed(Parse(input, prefix));
         }
 
         public static List<KeyValuePair<string, string>> ParseKeyed(IEnumerable<string> input)
