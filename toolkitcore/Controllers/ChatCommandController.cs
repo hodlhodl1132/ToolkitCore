@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,14 +24,8 @@ namespace ToolkitCore.Controllers
             );
         }
 
-        public static IEnumerable<string> Parse(string input, string prefix = "!")
+        public static IEnumerable<string> Parse(string input)
         {
-            // Strip the prefix from the input (if it exists)
-            if (input.ToLowerInvariant().StartsWith(prefix))
-            {
-                input = input.Substring(prefix.Length);
-            }
-            
             var cache = new List<string>();
             var segment = "";
             var quoted = false;
