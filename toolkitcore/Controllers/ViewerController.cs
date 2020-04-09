@@ -10,9 +10,20 @@ namespace ToolkitCore.Controllers
 {
     public static class ViewerController
     {
-        public static Viewer GetViewer(string Username)
+        public static Viewer GetViewer(string Username, out bool viewerExists, bool softCheck = false)
         {
-            return Viewers.All.Find(vwr => vwr.Username == Username) ?? new Viewer(Username);
+            // If doing soft check, do not create a new viewer if no viewer is found
+
+            Viewer viewer = Viewers.All.Find(vwr => vwr.Username == Username);
+
+            viewerExists = viewer != null;
+
+            if (!viewerExists && softCheck)
+            {
+                return null;
+            }
+
+            return viewer ?? new Viewer(Username);
         }
     }
 }
