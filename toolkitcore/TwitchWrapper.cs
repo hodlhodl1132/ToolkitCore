@@ -22,17 +22,14 @@ namespace ToolkitCore
 
         public static void StartAsync()
         {
-            TwitchWrapper.Initialize(new ConnectionCredentials(ToolkitCoreSettings.bot_username, ToolkitCoreSettings.oauth_token));
+            Initialize(new ConnectionCredentials(ToolkitCoreSettings.bot_username, ToolkitCoreSettings.oauth_token));
         }
 
         public static void Initialize(ConnectionCredentials credentials)
         {
             ResetClient();
 
-            if (ToolkitCoreSettings.connectOnGameStartup)
-            {
-                InitializeClient(credentials);
-            }
+            InitializeClient(credentials);
         }
 
         private static void ResetClient()
@@ -42,7 +39,7 @@ namespace ToolkitCore
                 Client.Disconnect();
             }
 
-            var clientOptions = new ClientOptions
+            ClientOptions clientOptions = new ClientOptions
             {
                 MessagesAllowedInPeriod = 750,
                 ThrottlingPeriod = TimeSpan.FromSeconds(30)

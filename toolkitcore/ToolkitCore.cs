@@ -42,7 +42,10 @@ namespace ToolkitCore
     {
         static Startup()
         {
-            TwitchWrapper.StartAsync();
+            if (ToolkitCoreSettings.connectOnGameStartup)
+            {
+                TwitchWrapper.StartAsync();
+            }
         }
     }
 }

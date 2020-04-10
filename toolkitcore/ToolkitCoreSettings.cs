@@ -78,7 +78,7 @@ namespace ToolkitCore
 
             Rect connectionButton = new Rect(input.x, input.y + verticalSpacing, input.width, verticalHeight);
 
-            if (TwitchWrapper.Client.IsConnected)
+            if (TwitchWrapper.Client != null && TwitchWrapper.Client.IsConnected)
             {
                 Widgets.Label(input, TCText.ColoredText("Connected", Color.green));
 
@@ -102,10 +102,10 @@ namespace ToolkitCore
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref channel_username, "channel_username", "", true);
-            Scribe_Values.Look(ref bot_username, "bot_username", "", true);
-            Scribe_Values.Look(ref oauth_token, "oauth_token", "", true);
-            Scribe_Values.Look(ref connectOnGameStartup, "connectOnGameStartup", true);
+            Scribe_Values.Look(ref channel_username, "channel_username", "");
+            Scribe_Values.Look(ref bot_username, "bot_username", "");
+            Scribe_Values.Look(ref oauth_token, "oauth_token", "");
+            Scribe_Values.Look(ref connectOnGameStartup, "connectOnGameStartup", false);
         }
 
         bool showOauth = false;
