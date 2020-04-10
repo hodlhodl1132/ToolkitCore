@@ -24,14 +24,8 @@ namespace ToolkitCore.Controllers
             );
         }
 
-        public static IEnumerable<string> Parse(string input, string prefix = "!")
+        public static IEnumerable<string> Parse(string input)
         {
-            // Strip the prefix from the input (if it exists)
-            if (input.ToLowerInvariant().StartsWith(prefix))
-            {
-                input = input.Substring(prefix.Length);
-            }
-            
             var cache = new List<string>();
             var segment = "";
             var quoted = false;
@@ -97,11 +91,6 @@ namespace ToolkitCore.Controllers
             }
 
             return cache.ToArray();
-        }
-
-        public static List<KeyValuePair<string, string>> ParseKeyed(string input, string prefix = "!")
-        {
-            return ParseKeyed(Parse(input, prefix));
         }
 
         public static List<KeyValuePair<string, string>> ParseKeyed(IEnumerable<string> input)
