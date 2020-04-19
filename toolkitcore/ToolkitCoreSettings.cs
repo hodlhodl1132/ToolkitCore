@@ -39,6 +39,16 @@ namespace ToolkitCore
 
             bot_username = Widgets.TextField(input, bot_username);
 
+            if (channel_username != "")
+            {
+                Rect copyUsername = new Rect(input.x + input.width + 10f, input.y, 200f, verticalHeight);
+
+                if (Widgets.ButtonText(copyUsername, "Same as Channel"))
+                {
+                    bot_username = channel_username;
+                }
+            }
+
             input.y += verticalSpacing;
 
             Rect oauthToggle = new Rect(input.x + input.width + 10f, input.y, 60f, verticalHeight);
@@ -56,7 +66,7 @@ namespace ToolkitCore
                 if (Widgets.ButtonText(oauthToggle, "Show")) showOauth = !showOauth;
             }
 
-            Rect newToken = new Rect(500f, input.y, 140f, verticalHeight);
+            Rect newToken = new Rect(oauthToggle.y + oauthToggle.width + 10f, input.y, 140f, verticalHeight);
 
             if (Widgets.ButtonText(newToken, "New OAuth Token")) Application.OpenURL("https://www.twitchapps.com/tmi/");
 
