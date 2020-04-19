@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolkitCore.Models;
+using ToolkitCore.Utilities;
 using Verse;
 
 namespace ToolkitCore.Controllers
@@ -12,7 +13,16 @@ namespace ToolkitCore.Controllers
     {
         public static ToolkitChatCommand GetChatCommand(string commandText)
         {
-            return DefDatabase<ToolkitChatCommand>.AllDefs.ToList().Find(cc => string.Equals(cc.commandText, commandText, StringComparison.InvariantCultureIgnoreCase));
-        }
+            string baseCommand = CommandFilter.Parse(commandText).FirstOrDefault();
+
+            if (baseCommand == null)
+            {
+                return null;
+            }
+
+            return DefDatabase<ToolkitChatCommand>.AllDefsListForReading.FirstOrDefault(
+                c => c.commandText.EqualsIgnoreCase(baseCommand)
+            );
+        }  
     }
 }
