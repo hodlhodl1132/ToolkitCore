@@ -63,6 +63,7 @@ namespace ToolkitCore
             Client.OnJoinedChannel += OnJoinedChannel;
             Client.OnMessageReceived += OnMessageReceived;
             Client.OnWhisperReceived += OnWhisperReceived;
+            Client.OnWhisperCommandReceived += OnWhisperCommandReceived;
             Client.OnChatCommandReceived += OnChatCommandReceived;
 
             Client.Connect();
@@ -70,7 +71,19 @@ namespace ToolkitCore
 
         private static void OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
-            
+            Log.Message($"{e.WhisperMessage.DisplayName}: {e.WhisperMessage.Message}");
+        }
+
+        private static void OnWhisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
+        {
+            Log.Message($"{e.Command.WhisperMessage.DisplayName}: {e.Command.Message}");
+
+            ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
+
+            if (chatCommand != null)
+            {
+                chatCommand.TryExecute(e.Command as ITwitchCommand);
+            }
         }
 
         private static void OnConnected(object sender, OnConnectedArgs e)
