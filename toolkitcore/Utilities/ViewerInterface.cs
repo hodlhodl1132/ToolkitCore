@@ -19,7 +19,7 @@ namespace ToolkitCore.Utilities
 
         public override void ParseCommand(ChatMessage msg)
         {
-            ViewerController.GetViewer(msg.Username).UpdateViewerFromMessage(msg);
+            ViewerController.GetViewer(msg.Username, out bool viewerExists).UpdateViewerFromMessage(msg);
         }
     }
 }

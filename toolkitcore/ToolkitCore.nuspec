@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>HodlHodl.Rimworld.Toolkit.Core</id>
-        <version>1.0.1</version>
+        <version>1.0.5</version>
         <description>ToolkitCore provides a framework for receiving/sending messages through Twitch Chat Websockets in Rimworld.</description>
         <authors>HodlHodl</authors>
         <license type="expression">MIT</license>

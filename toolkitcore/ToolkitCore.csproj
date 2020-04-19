@@ -48,6 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolkitCoreSettings.cs" />
     <Compile Include="TwitchInterfaceBase.cs" />
+    <Compile Include="Utilities\CommandFilter.cs" />
     <Compile Include="Utilities\TCText.cs" />
     <Compile Include="Utilities\ViewerInterface.cs" />
   </ItemGroup>
@@ -70,6 +71,14 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <NuGetCommandLineVersion>5.4.0</NuGetCommandLineVersion>
+    <PostBuildEvent>$(NuGetPackageFolders)nuget.commandline\$(NuGetCommandLineVersion)\tools\nuget.exe pack $(ProjectDir)ToolkitCore.nuspec -OutputDirectory $(ProjectDir)</PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.CommandLine" Version="$(NuGetCommandLineVersion)" />
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="TwitchLib.Client, Version=3.1.4.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -87,13 +96,5 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\references\TwitchLib.Communication.dll</HintPath>
     </Reference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <NuGetCommandLineVersion>5.4.0</NuGetCommandLineVersion>
-    <PostBuildEvent>$(NuGetPackageFolders)nuget.commandline\$(NuGetCommandLineVersion)\tools\nuget.exe pack $(ProjectDir)ToolkitCore.nuspec -OutputDirectory $(ProjectDir)</PostBuildEvent>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="NuGet.CommandLine" Version="$(NuGetCommandLineVersion)" />
   </ItemGroup>
 </Project>
