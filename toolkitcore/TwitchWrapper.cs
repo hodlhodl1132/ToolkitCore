@@ -60,6 +60,7 @@ namespace ToolkitCore
             Client.OnJoinedChannel += OnJoinedChannel;
             Client.OnMessageReceived += OnMessageReceived;
             Client.OnWhisperReceived += OnWhisperReceived;
+            Client.OnWhisperCommandReceived += OnWhisperCommandReceived;
             Client.OnChatCommandReceived += OnChatCommandReceived;
 
             Client.Connect();
@@ -67,7 +68,24 @@ namespace ToolkitCore
 
         private static void OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
-            
+            Log.Message($"{e.WhisperMessage.DisplayName}: {e.WhisperMessage.Message}");
+
+            List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
+
+            foreach (TwitchInterfaceBase receiver in receivers)
+            {
+                receiver.ParseWhisper(e.WhisperMessage);
+            }
+        }
+
+        private static void OnWhisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
+        {
+            ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
+
+            if (chatCommand != null)
+            {
+                chatCommand.TryExecute(e.Command as ITwitchCommand);
+            }
         }
 
         private static void OnConnected(object sender, OnConnectedArgs e)
@@ -87,14 +105,12 @@ namespace ToolkitCore
 
             foreach (TwitchInterfaceBase receiver in receivers)
             {
-                receiver.ParseCommand(e.ChatMessage);
+                receiver.ParseMessage(e.ChatMessage);
             }
         }
 
         private static void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
-            Log.Message($"{e.Command.ChatMessage.DisplayName}: {e.Command.ChatMessage.Message}");
-
             ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
 
             if (chatCommand != null)
