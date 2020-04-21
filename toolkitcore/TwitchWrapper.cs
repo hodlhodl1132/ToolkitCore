@@ -69,12 +69,17 @@ namespace ToolkitCore
         private static void OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
             Log.Message($"{e.WhisperMessage.DisplayName}: {e.WhisperMessage.Message}");
+
+            List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
+
+            foreach (TwitchInterfaceBase receiver in receivers)
+            {
+                receiver.ParseWhisper(e.WhisperMessage);
+            }
         }
 
         private static void OnWhisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
         {
-            Log.Message($"{e.Command.WhisperMessage.DisplayName}: {e.Command.Message}");
-
             ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
 
             if (chatCommand != null)
@@ -100,14 +105,12 @@ namespace ToolkitCore
 
             foreach (TwitchInterfaceBase receiver in receivers)
             {
-                receiver.ParseCommand(e.ChatMessage);
+                receiver.ParseMessage(e.ChatMessage);
             }
         }
 
         private static void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
-            Log.Message($"{e.Command.ChatMessage.DisplayName}: {e.Command.ChatMessage.Message}");
-
             ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
 
             if (chatCommand != null)

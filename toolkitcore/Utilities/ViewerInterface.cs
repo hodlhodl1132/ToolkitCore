@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ToolkitCore.Controllers;
 using ToolkitCore.Models;
+using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
 using Verse;
 
@@ -17,9 +18,16 @@ namespace ToolkitCore.Utilities
 
         }
 
-        public override void ParseCommand(ChatMessage msg)
+        public override void ParseMessage(ChatMessage chatMessage)
         {
-            ViewerController.GetViewer(msg.Username, out bool viewerExists).UpdateViewerFromMessage(msg);
+            if (chatMessage == null) return;
+
+            ViewerController.GetViewer(chatMessage.Username, out bool viewerExists).UpdateViewerFromMessage(chatMessage);
+        }
+
+        public override void ParseWhisper(WhisperMessage whisperMessage)
+        {
+            
         }
     }
 }
