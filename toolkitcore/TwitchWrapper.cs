@@ -74,7 +74,7 @@ namespace ToolkitCore
 
             foreach (TwitchInterfaceBase receiver in receivers)
             {
-                receiver.ParseWhisper(e.WhisperMessage);
+                receiver.ParseMessage(e.WhisperMessage as ITwitchCommand);
             }
         }
 
@@ -105,7 +105,7 @@ namespace ToolkitCore
 
             foreach (TwitchInterfaceBase receiver in receivers)
             {
-                receiver.ParseMessage(e.ChatMessage);
+                receiver.ParseMessage(e.ChatMessage as ITwitchCommand);
             }
         }
 

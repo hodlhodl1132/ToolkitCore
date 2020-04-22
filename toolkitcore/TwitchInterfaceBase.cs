@@ -11,8 +11,6 @@ namespace ToolkitCore
 {
     public abstract class TwitchInterfaceBase : GameComponent
     {
-        public abstract void ParseMessage(ChatMessage chatMessage);
-
-        public abstract void ParseWhisper(WhisperMessage whisperMessage);
+        public abstract void ParseMessage(ITwitchCommand twitchCommand);
     }
 }
