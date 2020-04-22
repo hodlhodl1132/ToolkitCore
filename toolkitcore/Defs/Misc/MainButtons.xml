@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <MainButtonDef>
+    <defName>ToolkitCore</defName>
+    <label>toolkitcore</label>
+    <description>Quick Access to Toolkit Settings</description>
+    <tabWindowClass>ToolkitCore.Windows.MainTabWindow_ToolkitCore</tabWindowClass>
+    <order>75</order>
+    <validWithoutMap>true</validWithoutMap>
+    <minimized>False</minimized>
+  </MainButtonDef>
+</Defs>

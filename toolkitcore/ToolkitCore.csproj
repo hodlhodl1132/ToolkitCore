@@ -40,6 +40,7 @@
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Database\GlobalDatabase.cs" />
     <Compile Include="HarmonyPatches\SavePatch.cs" />
+    <Compile Include="Models\MessageLog.cs" />
     <Compile Include="Models\ToolkitChatCommand.cs" />
     <Compile Include="Models\CommandMethod.cs" />
     <Compile Include="Models\Viewer.cs" />
@@ -51,6 +52,8 @@
     <Compile Include="Utilities\CommandFilter.cs" />
     <Compile Include="Utilities\TCText.cs" />
     <Compile Include="Utilities\ViewerInterface.cs" />
+    <Compile Include="Windows\MainTabWindow_ToolkitCore.cs" />
+    <Compile Include="Windows\Window_ModSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <!-- Using ContentWithTargetPath+TargetPath rather than Content+Link because the latter apparently must have the Link path be within OutputDir -->
@@ -61,6 +64,11 @@
     <ContentWithTargetPath Include="Defs\Commands\Commands.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>..\Defs\Commands\Commands.xml</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="Defs\Misc\MainButtons.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\Defs\Misc\MainButtons.xml</TargetPath>
+      <SubType>Designer</SubType>
     </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup>

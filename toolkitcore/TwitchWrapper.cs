@@ -68,6 +68,8 @@ namespace ToolkitCore
 
         private static void OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
+            MessageLog.LogMessage(e.WhisperMessage);
+
             if (!ToolkitCoreSettings.allowWhispers) return;
 
             Log.Message($"{e.WhisperMessage.DisplayName}: {e.WhisperMessage.Message}");
@@ -103,6 +105,8 @@ namespace ToolkitCore
 
         private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
+            MessageLog.LogMessage(e.ChatMessage);
+
             Log.Message($"{e.ChatMessage.DisplayName}: {e.ChatMessage.Message}");
 
             List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
