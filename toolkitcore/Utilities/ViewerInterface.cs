@@ -7,6 +7,7 @@ using ToolkitCore.Controllers;
 using ToolkitCore.Models;
 using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
+using TwitchLib.Client.Models.Interfaces;
 using Verse;
 
 namespace ToolkitCore.Utilities
@@ -18,7 +19,7 @@ namespace ToolkitCore.Utilities
 
         }
 
-        public override void ParseMessage(ITwitchCommand twitchCommand)
+        public override void ParseMessage(ITwitchMessage twitchCommand)
         {
             if (twitchCommand == null) return;
 

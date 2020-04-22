@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TwitchLib.Client.Interfaces;
-using TwitchLib.Client.Models;
+﻿using TwitchLib.Client.Models.Interfaces;
 using Verse;
 
 namespace ToolkitCore
 {
     public abstract class TwitchInterfaceBase : GameComponent
     {
-        public abstract void ParseMessage(ITwitchCommand twitchCommand);
+        public abstract void ParseMessage(ITwitchMessage twitchMessage);
     }
 }

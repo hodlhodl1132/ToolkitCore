@@ -9,6 +9,7 @@ using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
+using TwitchLib.Client.Models.Interfaces;
 using TwitchLib.Communication.Clients;
 using TwitchLib.Communication.Models;
 using UnityEngine;
@@ -72,13 +73,11 @@ namespace ToolkitCore
 
             if (!ToolkitCoreSettings.allowWhispers) return;
 
-            Log.Message($"{e.WhisperMessage.DisplayName}: {e.WhisperMessage.Message}");
-
             List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
 
             foreach (TwitchInterfaceBase receiver in receivers)
             {
-                receiver.ParseMessage(e.WhisperMessage as ITwitchCommand);
+                receiver.ParseMessage(e.WhisperMessage as ITwitchMessage);
             }
         }
 
@@ -107,13 +106,11 @@ namespace ToolkitCore
         {
             MessageLog.LogMessage(e.ChatMessage);
 
-            Log.Message($"{e.ChatMessage.DisplayName}: {e.ChatMessage.Message}");
-
             List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
 
             foreach (TwitchInterfaceBase receiver in receivers)
             {
-                receiver.ParseMessage(e.ChatMessage as ITwitchCommand);
+                receiver.ParseMessage(e.ChatMessage);
             }
         }
 
