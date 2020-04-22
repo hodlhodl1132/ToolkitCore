@@ -18,16 +18,16 @@ namespace ToolkitCore.Utilities
 
         }
 
-        public override void ParseMessage(ChatMessage chatMessage)
+        public override void ParseMessage(ITwitchCommand twitchCommand)
         {
-            if (chatMessage == null) return;
+            if (twitchCommand == null) return;
 
-            ViewerController.GetViewer(chatMessage.Username, out bool viewerExists).UpdateViewerFromMessage(chatMessage);
-        }
+            Viewer viewer = ViewerController.GetViewer(twitchCommand.Username, true);
 
-        public override void ParseWhisper(WhisperMessage whisperMessage)
-        {
-            
+            if (viewer != null && twitchCommand.ChatMessage != null)
+            {
+                viewer.UpdateViewerFromMessage(twitchCommand.ChatMessage);
+            }
         }
     }
 }
