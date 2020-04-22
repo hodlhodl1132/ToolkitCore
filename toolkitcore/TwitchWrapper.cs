@@ -68,6 +68,8 @@ namespace ToolkitCore
 
         private static void OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
+            if (!ToolkitCoreSettings.allowWhispers) return;
+
             Log.Message($"{e.WhisperMessage.DisplayName}: {e.WhisperMessage.Message}");
 
             List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
@@ -80,6 +82,8 @@ namespace ToolkitCore
 
         private static void OnWhisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
         {
+            if (!ToolkitCoreSettings.allowWhispers) return;
+
             ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
 
             if (chatCommand != null)

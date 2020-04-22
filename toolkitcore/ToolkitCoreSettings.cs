@@ -11,11 +11,18 @@ namespace ToolkitCore
         public static string bot_username = "";
         public static string oauth_token = "";
 
-        public static bool connectOnGameStartup = false;        
+        public static bool connectOnGameStartup = false;
+        public static bool allowWhispers = true;
 
         public void DoWindowContents(Rect inRect)
         {
-            Rect channelDetails = new Rect(0f, verticalSpacing, inRect.width, 64f);
+            Rect helpButton = new Rect(inRect.width - 120f, verticalSpacing, 90f, verticalHeight);
+            if (Widgets.ButtonText(helpButton, "Help"))
+            {
+                Application.OpenURL("https://github.com/hodldeeznuts/ToolkitCore/wiki/Connecting-to-Twitch-Chat");
+            }
+
+            Rect channelDetails = new Rect(0f, verticalSpacing, inRect.width / 2f, 64f);
             Widgets.Label(channelDetails, TCText.BigText("Channel Details"));
 
             float sectionVertical = channelDetails.y + (verticalSpacing * 2f);
@@ -76,7 +83,7 @@ namespace ToolkitCore
 
             // Connection
 
-            Rect connectionDetails = new Rect(0f, input.y + (verticalSpacing * 2), inRect.width, 64f);
+            Rect connectionDetails = new Rect(0f, input.y + (verticalSpacing * 2), inRect.width / 2f, 64f);
             Widgets.Label(connectionDetails, TCText.BigText("Connection"));
 
             sectionVertical = connectionDetails.y + (verticalSpacing * 2f);
@@ -101,13 +108,21 @@ namespace ToolkitCore
                 if (Widgets.ButtonText(connectionButton, "Connect")) TwitchWrapper.StartAsync();
             }
 
-            label.y += verticalSpacing * 2;
+            label.y += verticalSpacing * 3;
 
             Widgets.Label(label, "Auto Connect on Startup:");
 
             input.y = label.y;
 
             Widgets.Checkbox(input.position, ref connectOnGameStartup);
+
+            label.y += verticalSpacing;
+
+            Widgets.Label(label, "Allow Viewers to Whisper:");
+
+            input.y = label.y;
+
+            Widgets.Checkbox(input.position, ref allowWhispers);
         }
 
         public override void ExposeData()
@@ -116,6 +131,7 @@ namespace ToolkitCore
             Scribe_Values.Look(ref bot_username, "bot_username", "");
             Scribe_Values.Look(ref oauth_token, "oauth_token", "");
             Scribe_Values.Look(ref connectOnGameStartup, "connectOnGameStartup", false);
+            Scribe_Values.Look(ref allowWhispers, "allowWhispers", true);
         }
 
         bool showOauth = false;
