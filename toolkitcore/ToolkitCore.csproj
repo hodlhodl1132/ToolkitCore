@@ -41,6 +41,7 @@
     <Compile Include="Database\DatabaseController.cs" />
     <Compile Include="Database\GlobalDatabase.cs" />
     <Compile Include="HarmonyPatches\SavePatch.cs" />
+    <Compile Include="Interfaces\IAddonMenu.cs" />
     <Compile Include="Models\MessageLog.cs" />
     <Compile Include="Models\ToolkitAddon.cs" />
     <Compile Include="Models\ToolkitChatCommand.cs" />

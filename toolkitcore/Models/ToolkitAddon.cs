@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolkitCore.Interfaces;
 using Verse;
 
 namespace ToolkitCore.Models
@@ -14,11 +15,11 @@ namespace ToolkitCore.Models
 
         }
 
-        public Type menuClass = typeof(AddonMenu);
+        public Type menuClass = typeof(IAddonMenu);
 
-        public AddonMenu GetAddonMenu()
+        public IAddonMenu GetAddonMenu()
         {
-            return Activator.CreateInstance(menuClass) as AddonMenu;
+            return Activator.CreateInstance(menuClass) as IAddonMenu;
         }
     }
 }

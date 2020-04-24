@@ -24,7 +24,7 @@ namespace ToolkitCore.Windows
             {
                 if (listing.ButtonText(addon.LabelCap))
                 {
-                    Find.WindowStack.Add(new FloatMenu(addon.GetAddonMenu().MenuOptions));
+                    Find.WindowStack.Add(new FloatMenu(addon.GetAddonMenu().MenuOptions()));
                 }
             }
 
