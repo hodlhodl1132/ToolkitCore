@@ -56,34 +56,6 @@ namespace ToolkitCore.Windows
             }
 
             listing.End();
-
-            //Rect label = new Rect(0, 0, 400f, 32f);
-            //Widgets.Label(label, "Toolkit Quick Settings");
-
-            //Rect settingsButton = new Rect(0, 32f, 300f, 32f);
-            //if (Widgets.ButtonText(settingsButton, "ToolkitCore Settings"))
-            //{
-            //    Window_ModSettings window = new Window_ModSettings(LoadedModManager.GetMod<ToolkitCore>());
-            //    Find.WindowStack.TryRemove(window.GetType());
-            //    Find.WindowStack.Add(window);
-            //}
-
-            //// If client is not setup do not render connection details
-            //if (TwitchWrapper.Client == null) return;
-
-            //Rect connectionLabel = new Rect(500f, 0f, 200f, 32f);
-            //Widgets.Label(connectionLabel, TwitchWrapper.Client.IsConnected ? TCText.ColoredText("Connected", Color.green) : TCText.ColoredText("Not Connected", Color.red));
-
-            //Rect messageLogLabel = new Rect(500f, 32f, 200f, 32f);
-            //Widgets.Label(messageLogLabel, "Message Log");
-
-            //Rect messageBox = new Rect(500f, 64f, 300f, 180f);
-
-            //Rect whisperLogLabel = new Rect(500f, 232f, 200f, 32f);
-            //Widgets.Label(whisperLogLabel, "Whisper Log");
-
-
-            //Widgets.TextArea(whisperBox, whisperBoxText, true);
         }
 
         public override Vector2 RequestedTabSize => new Vector2(800, 400);
