@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+  <ToolkitCore.Models.ToolkitAddon>
+    <defName>ToolkitCore</defName>
+    <label>ToolkitCore</label>
+    <menuClass>ToolkitCore.AddonMenu</menuClass>
+  </ToolkitCore.Models.ToolkitAddon>
+</Defs>

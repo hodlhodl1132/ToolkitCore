@@ -1,4 +1,5 @@
 ﻿using RimWorld;
+using System.Collections.Generic;
 using ToolkitCore.Models;
 using ToolkitCore.Utilities;
 using TwitchLib.Client.Models;
@@ -12,54 +13,77 @@ namespace ToolkitCore.Windows
 
         public override void DoWindowContents(Rect inRect)
         {
-            Rect label = new Rect(0, 0, 400f, 32f);
-            Widgets.Label(label, "Toolkit Quick Settings");
+            Listing_Standard listing = new Listing_Standard();
+            listing.Begin(inRect);
 
-            Rect settingsButton = new Rect(0, 32f, 300f, 32f);
-            if (Widgets.ButtonText(settingsButton, "ToolkitCore Settings"))
+            listing.ColumnWidth = inRect.width * 0.45f;
+
+            listing.Label("Toolkit Quick Menu");
+
+            foreach (ToolkitAddon addon in AddonRegistry.ToolkitAddons)
             {
-                Window_ModSettings window = new Window_ModSettings(LoadedModManager.GetMod<ToolkitCore>());
-                Find.WindowStack.TryRemove(window.GetType());
-                Find.WindowStack.Add(window);
+                if (listing.ButtonText(addon.LabelCap))
+                {
+                    Find.WindowStack.Add(new FloatMenu(addon.GetAddonMenu().MenuOptions));
+                }
             }
 
-            // If initial setup has not been completed
-            if (ToolkitCoreSettings.channel_username == "")
+            if (TwitchWrapper.Client != null)
             {
-                Rect setupWarning = new Rect(0, 80f, 300f, 64f);
-                Widgets.Label(setupWarning, "ToolkitCore has not been setup completely in mod settings.");
+                listing.NewColumn();
 
-                return;
+                listing.Label(TwitchWrapper.Client.IsConnected ? TCText.ColoredText("Connected", Color.green) : TCText.ColoredText("Not Connected", Color.red));
+
+                listing.Label("Chat Log");
+
+                string messageBoxText = "";
+                foreach (ChatMessage chatMessage in MessageLog.LastChatMessages)
+                {
+                    messageBoxText += $"{chatMessage.DisplayName}: {chatMessage.Message}\n";
+                }
+
+                listing.TextEntry(messageBoxText, 7);
+
+                listing.Label("Whisper Log");
+
+                string whisperBoxText = "";
+                foreach (WhisperMessage whisperMessage in MessageLog.LastWhisperMessages)
+                {
+                    whisperBoxText += $"{whisperMessage.DisplayName}: {whisperMessage.Message}\n";
+                }
+
+                listing.TextEntry(whisperBoxText, 3);
             }
 
+            listing.End();
 
-            // If client is not setup do not render connection details
-            if (TwitchWrapper.Client == null) return;
+            //Rect label = new Rect(0, 0, 400f, 32f);
+            //Widgets.Label(label, "Toolkit Quick Settings");
 
-            Rect connectionLabel = new Rect(500f, 0f, 200f, 32f);
-            Widgets.Label(connectionLabel, TwitchWrapper.Client.IsConnected ? TCText.ColoredText("Connected", Color.green) : TCText.ColoredText("Not Connected", Color.red));
+            //Rect settingsButton = new Rect(0, 32f, 300f, 32f);
+            //if (Widgets.ButtonText(settingsButton, "ToolkitCore Settings"))
+            //{
+            //    Window_ModSettings window = new Window_ModSettings(LoadedModManager.GetMod<ToolkitCore>());
+            //    Find.WindowStack.TryRemove(window.GetType());
+            //    Find.WindowStack.Add(window);
+            //}
 
-            Rect messageLogLabel = new Rect(500f, 32f, 200f, 32f);
-            Widgets.Label(messageLogLabel, "Message Log");
+            //// If client is not setup do not render connection details
+            //if (TwitchWrapper.Client == null) return;
 
-            Rect messageBox = new Rect(500f, 64f, 300f, 180f);
-            string messageBoxText = "";
-            foreach (ChatMessage chatMessage in MessageLog.LastChatMessages)
-            {
-                messageBoxText += $"{chatMessage.DisplayName}: {chatMessage.Message}\n";
-            }
-            Widgets.TextArea(messageBox, messageBoxText, true);
+            //Rect connectionLabel = new Rect(500f, 0f, 200f, 32f);
+            //Widgets.Label(connectionLabel, TwitchWrapper.Client.IsConnected ? TCText.ColoredText("Connected", Color.green) : TCText.ColoredText("Not Connected", Color.red));
 
-            Rect whisperLogLabel = new Rect(500f, 232f, 200f, 32f);
-            Widgets.Label(whisperLogLabel, "Whisper Log");
+            //Rect messageLogLabel = new Rect(500f, 32f, 200f, 32f);
+            //Widgets.Label(messageLogLabel, "Message Log");
 
-            Rect whisperBox = new Rect(500f, 264f, 300f, 80f);
-            string whisperBoxText = "";
-            foreach (WhisperMessage whisperMessage in MessageLog.LastWhisperMessages)
-            {
-                whisperBoxText += $"{whisperMessage.DisplayName}: {whisperMessage.Message}\n";
-            }
-            Widgets.TextArea(whisperBox, whisperBoxText, true);
+            //Rect messageBox = new Rect(500f, 64f, 300f, 180f);
+
+            //Rect whisperLogLabel = new Rect(500f, 232f, 200f, 32f);
+            //Widgets.Label(whisperLogLabel, "Whisper Log");
+
+
+            //Widgets.TextArea(whisperBox, whisperBoxText, true);
         }
 
         public override Vector2 RequestedTabSize => new Vector2(800, 400);
