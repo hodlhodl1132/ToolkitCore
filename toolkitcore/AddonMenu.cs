@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using ToolkitCore.Interfaces;
 using ToolkitCore.Models;
 using ToolkitCore.Windows;
+using UnityEngine;
 using Verse;
 
 namespace ToolkitCore
@@ -25,6 +26,10 @@ namespace ToolkitCore
                 Window_MessageLog window = new Window_MessageLog();
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
+            }),
+            new FloatMenuOption("Help", delegate()
+            {
+                Application.OpenURL("https://github.com/hodldeeznuts/ToolkitCore/wiki");
             })
         };
     }
