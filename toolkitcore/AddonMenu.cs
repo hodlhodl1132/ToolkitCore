@@ -19,6 +19,12 @@ namespace ToolkitCore
                 Window_ModSettings window = new Window_ModSettings(LoadedModManager.GetMod<ToolkitCore>());
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
+            }),
+            new FloatMenuOption("Message Log", delegate()
+            {
+                Window_MessageLog window = new Window_MessageLog();
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
             })
         };
     }

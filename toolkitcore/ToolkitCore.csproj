@@ -57,6 +57,7 @@
     <Compile Include="Utilities\TCText.cs" />
     <Compile Include="Utilities\ViewerInterface.cs" />
     <Compile Include="Windows\MainTabWindow_ToolkitCore.cs" />
+    <Compile Include="Windows\Window_MessageLog.cs" />
     <Compile Include="Windows\Window_ModSettings.cs" />
   </ItemGroup>
   <ItemGroup>

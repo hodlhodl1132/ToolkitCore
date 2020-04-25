@@ -16,8 +16,6 @@ namespace ToolkitCore.Windows
             Listing_Standard listing = new Listing_Standard();
             listing.Begin(inRect);
 
-            listing.ColumnWidth = inRect.width * 0.45f;
-
             listing.Label("Toolkit Quick Menu");
 
             foreach (ToolkitAddon addon in AddonRegistry.ToolkitAddons)
@@ -28,36 +26,11 @@ namespace ToolkitCore.Windows
                 }
             }
 
-            if (TwitchWrapper.Client != null)
-            {
-                listing.NewColumn();
-
-                listing.Label(TwitchWrapper.Client.IsConnected ? TCText.ColoredText("Connected", Color.green) : TCText.ColoredText("Not Connected", Color.red));
-
-                listing.Label("Chat Log");
-
-                string messageBoxText = "";
-                foreach (ChatMessage chatMessage in MessageLog.LastChatMessages)
-                {
-                    messageBoxText += $"{chatMessage.DisplayName}: {chatMessage.Message}\n";
-                }
-
-                listing.TextEntry(messageBoxText, 7);
-
-                listing.Label("Whisper Log");
-
-                string whisperBoxText = "";
-                foreach (WhisperMessage whisperMessage in MessageLog.LastWhisperMessages)
-                {
-                    whisperBoxText += $"{whisperMessage.DisplayName}: {whisperMessage.Message}\n";
-                }
-
-                listing.TextEntry(whisperBoxText, 3);
-            }
-
             listing.End();
         }
 
-        public override Vector2 RequestedTabSize => new Vector2(800, 400);
+        public override Vector2 RequestedTabSize => new Vector2(300f, 100f + (AddonRegistry.ToolkitAddons.Count * 24f) );
+
+        public override MainTabWindowAnchor Anchor => MainTabWindowAnchor.Right;
     }
 }
