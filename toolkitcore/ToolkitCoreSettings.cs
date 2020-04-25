@@ -19,7 +19,7 @@ namespace ToolkitCore
             Rect helpButton = new Rect(inRect.width - 120f, verticalSpacing, 90f, verticalHeight);
             if (Widgets.ButtonText(helpButton, "Help"))
             {
-                Application.OpenURL("https://github.com/hodldeeznuts/ToolkitCore/wiki/Connecting-to-Twitch-Chat");
+                Application.OpenURL("https://github.com/hodldeeznuts/ToolkitCore/wiki/Twitch-Chat-Connection");
             }
 
             Rect channelDetails = new Rect(0f, verticalSpacing, inRect.width / 2f, 64f);
