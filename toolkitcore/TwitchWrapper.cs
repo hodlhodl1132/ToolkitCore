@@ -71,7 +71,7 @@ namespace ToolkitCore
         {
             MessageLog.LogMessage(e.WhisperMessage);
 
-            if (!ToolkitCoreSettings.allowWhispers) return;
+            if (Current.Game == null ||  !ToolkitCoreSettings.allowWhispers) return;
 
             List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
 
@@ -83,7 +83,7 @@ namespace ToolkitCore
 
         private static void OnWhisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
         {
-            if (!ToolkitCoreSettings.allowWhispers) return;
+            if (Current.Game == null || !ToolkitCoreSettings.allowWhispers) return;
 
             ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
 
@@ -106,6 +106,8 @@ namespace ToolkitCore
         {
             MessageLog.LogMessage(e.ChatMessage);
 
+            if (Current.Game == null) return;
+
             List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
 
             foreach (TwitchInterfaceBase receiver in receivers)
@@ -116,6 +118,8 @@ namespace ToolkitCore
 
         private static void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
+            if (Current.Game == null) return;
+
             ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
 
             if (chatCommand != null)
