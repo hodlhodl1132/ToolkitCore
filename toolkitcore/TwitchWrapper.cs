@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using ToolkitCore.Controllers;
 using ToolkitCore.Models;
+using ToolkitCore.Utilities;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
 using TwitchLib.Client.Interfaces;
@@ -131,6 +132,16 @@ namespace ToolkitCore
         public static void SendChatMessage(string message)
         {
             Client.SendMessage(Client.GetJoinedChannel(ToolkitCoreSettings.channel_username), message);
+        }
+
+        public static void OnUserJoined(object sender, OnUserJoinedArgs args)
+        {
+            ActiveViewers.TryAddViewer(args.Username);
+        }
+
+        public static void OnUserLeft(object sender, OnUserLeftArgs args)
+        {
+            ActiveViewers.TryRemoveViewer(args.Username);
         }
     }
 }

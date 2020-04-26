@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolkitCore.Utilities;
 using TwitchLib.Client.Models;
 
 namespace ToolkitCore.Models
@@ -23,6 +24,8 @@ namespace ToolkitCore.Models
             }
 
             LastChatMessages.Add(chatMessage);
+
+            ActiveViewers.TryAddViewer(chatMessage.Username);
         }
 
         public static void LogMessage(WhisperMessage whisperMessage)
@@ -33,6 +36,8 @@ namespace ToolkitCore.Models
             }
 
             LastWhisperMessages.Add(whisperMessage);
+
+            ActiveViewers.TryAddViewer(whisperMessage.Username);
         }
     }
 }
