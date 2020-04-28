@@ -25,7 +25,7 @@ namespace ToolkitCore.Models
 
             LastChatMessages.Add(chatMessage);
 
-            ViewerTracker.TryAddViewer(chatMessage.Username);
+            ViewerTracker.UpdateViewer(chatMessage.Username);
         }
 
         public static void LogMessage(WhisperMessage whisperMessage)
@@ -36,8 +36,6 @@ namespace ToolkitCore.Models
             }
 
             LastWhisperMessages.Add(whisperMessage);
-
-            ViewerTracker.TryAddViewer(whisperMessage.Username);
         }
     }
 }
