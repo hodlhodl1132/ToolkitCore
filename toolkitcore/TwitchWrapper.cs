@@ -12,6 +12,7 @@ using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
 using TwitchLib.Client.Models.Interfaces;
 using TwitchLib.Communication.Clients;
+using TwitchLib.Communication.Events;
 using TwitchLib.Communication.Models;
 using UnityEngine;
 using Verse;
@@ -70,13 +71,31 @@ namespace ToolkitCore
             // Initialize the client with the credentials instance, and setting a default channel to connect to.
             Client.Initialize(credentials, ToolkitCoreSettings.channel_username);
 
-            // Bind callbacks to events
+            // Bind Channel Connection
             Client.OnConnected += OnConnected;
             Client.OnJoinedChannel += OnJoinedChannel;
+
+            // Bind Messages and Whispers
             Client.OnMessageReceived += OnMessageReceived;
             Client.OnWhisperReceived += OnWhisperReceived;
             Client.OnWhisperCommandReceived += OnWhisperCommandReceived;
             Client.OnChatCommandReceived += OnChatCommandReceived;
+
+            // Bind Misc Events
+            Client.OnBeingHosted += OnBeingHosted;
+            Client.OnCommunitySubscription += OnCommunitySubscription;
+            Client.OnConnectionError += OnConnectionError;
+            Client.OnDisconnected += OnDisconnected;
+            Client.OnFailureToReceiveJoinConfirmation += OnFailureToReceiveJoinConfirmation;
+            Client.OnGiftedSubscription += OnGiftedSubscription;
+            Client.OnHostingStarted += OnHostingStarted;
+            Client.OnIncorrectLogin += OnIncorrectLogin;
+            Client.OnLog += OnLog;
+            Client.OnNewSubscriber += OnNewSubscriber;
+            Client.OnReSubscriber += OnReSubscriber;
+            Client.OnRaidNotification += OnRaidNotification;
+            Client.OnUserBanned += OnUserBanned;
+
 
             Client.Connect();
         }
@@ -140,6 +159,71 @@ namespace ToolkitCore
             {
                 chatCommand.TryExecute(e.Command as ITwitchCommand);
             }
+        }
+
+        public static void OnBeingHosted(object sender, OnBeingHostedArgs e)
+        {
+
+        }
+
+        public static void OnCommunitySubscription(object sender, OnCommunitySubscriptionArgs e)
+        {
+
+        }
+
+        public static void OnConnectionError(object sender, OnConnectionErrorArgs e)
+        {
+            Log.Error("Client has experienced a connection error. " + e.Error);
+        }
+
+        public static void OnDisconnected(object sender, OnDisconnectedEventArgs e)
+        {
+            Log.Warning("Client has disconnected");
+        }
+
+        public static void OnFailureToReceiveJoinConfirmation(object sender, OnFailureToReceiveJoinConfirmationArgs e)
+        {
+
+        }
+
+        public static void OnGiftedSubscription(object sender, OnGiftedSubscriptionArgs e)
+        {
+
+        }
+
+        public static void OnHostingStarted(object sender, OnHostingStartedArgs e)
+        {
+
+        }
+
+        public static void OnIncorrectLogin(object sender, OnIncorrectLoginArgs e)
+        {
+            Log.Error("Incorrect login detected. " + e.Exception.Message);
+        }
+
+        public static void OnLog(object sender, OnLogArgs e)
+        {
+            
+        }
+
+        public static void OnNewSubscriber(object sender, OnNewSubscriberArgs e)
+        {
+            Log.Message("New Subscriber. " + e.Subscriber.DisplayName);
+        }
+
+        public static void OnReSubscriber(object sender, OnReSubscriberArgs e)
+        {
+            Log.Message("New Subscriber. " + e.ReSubscriber.DisplayName);
+        }
+
+        public static void OnRaidNotification(object sender, OnRaidNotificationArgs e)
+        {
+            Log.Message("Being raided by " + e.RaidNotification.DisplayName);
+        }
+
+        public static void OnUserBanned(object sender, OnUserBannedArgs e)
+        {
+            Log.Message("User has been banned - " + e.UserBan.Username);
         }
 
         public static void SendChatMessage(string message)
