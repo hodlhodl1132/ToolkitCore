@@ -35,7 +35,7 @@ namespace ToolkitCore.Windows
 
                 if (listing.ButtonText(connected ? "Disconnect" : "Connect"))
                 {
-                    TwitchWrapper.StartAsync();
+                    TwitchWrapper.Client.Disconnect();
                 }
             }
             else
