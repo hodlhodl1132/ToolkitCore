@@ -23,7 +23,16 @@ namespace ToolkitCore.Utilities
         {
             if (twitchCommand == null) return;
 
-            Viewer viewer = ViewerController.GetViewer(twitchCommand.Username, true);
+            Viewer viewer;
+
+            if (ViewerController.ViewerExists(twitchCommand.Username))
+            {
+                viewer = ViewerController.GetViewer(twitchCommand.Username);
+            }
+            else
+            {
+                viewer = ViewerController.CreateViewer(twitchCommand.Username);
+            }
 
             if (viewer != null && twitchCommand.ChatMessage != null)
             {

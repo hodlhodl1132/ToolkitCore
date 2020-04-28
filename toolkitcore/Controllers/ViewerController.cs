@@ -10,14 +10,18 @@ namespace ToolkitCore.Controllers
 {
     public static class ViewerController
     {
-        public static void CreateViewer(string Username)
+        public static Viewer CreateViewer(string Username)
         {
             if (ViewerExists(Username))
             {
                 throw new Exception("Viewer already exists");
             }
 
-            Viewers.All.Add(new Viewer(Username));
+            Viewer viewer = new Viewer(Username);
+
+            Viewers.All.Add(viewer);
+
+            return viewer;
         }
 
         public static Viewer GetViewer(string Username)
