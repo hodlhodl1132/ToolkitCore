@@ -36,24 +36,37 @@ namespace ToolkitCore
 
         private static void ResetClient()
         {
-            if (Client != null)
+            try
             {
-                Client.Disconnect();
+                if (Client != null && Client.IsConnected)
+                {
+                    Client.Disconnect();
+                }
+
+                ClientOptions clientOptions = new ClientOptions
+                {
+                    MessagesAllowedInPeriod = 750,
+                    ThrottlingPeriod = TimeSpan.FromSeconds(30)
+                };
+
+                WebSocketClient customClient = new WebSocketClient(clientOptions);
+
+                Client = new TwitchClient(customClient);
             }
-
-            ClientOptions clientOptions = new ClientOptions
+            catch (Exception e)
             {
-                MessagesAllowedInPeriod = 750,
-                ThrottlingPeriod = TimeSpan.FromSeconds(30)
-            };
-
-            WebSocketClient customClient = new WebSocketClient(clientOptions);
-
-            Client = new TwitchClient(customClient);
+                Log.Error(e.Message + e.InnerException.Message);
+            }
         }
 
         private static void InitializeClient(ConnectionCredentials credentials)
         {
+            if (Client == null)
+            {
+                Log.Error("Tried to initialize null client, report to mod author");
+                return;
+            }
+
             // Initialize the client with the credentials instance, and setting a default channel to connect to.
             Client.Initialize(credentials, ToolkitCoreSettings.channel_username);
 
@@ -132,16 +145,6 @@ namespace ToolkitCore
         public static void SendChatMessage(string message)
         {
             Client.SendMessage(Client.GetJoinedChannel(ToolkitCoreSettings.channel_username), message);
-        }
-
-        public static void OnUserJoined(object sender, OnUserJoinedArgs args)
-        {
-            ActiveViewers.TryAddViewer(args.Username);
-        }
-
-        public static void OnUserLeft(object sender, OnUserLeftArgs args)
-        {
-            ActiveViewers.TryRemoveViewer(args.Username);
         }
     }
 }
