@@ -13,33 +13,38 @@ namespace ToolkitCore.Utilities
     {
         static Dictionary<string, DateTime> viewersLastActiveTime = new Dictionary<string, DateTime>();
 
-        public static void UpdateViewer(string Username)
+        public static void UpdateViewer(Viewer viewer)
         {
-            if (Username == null)
+            if (viewer == null)
             {
-                throw new ArgumentNullException(Username);
+                throw new ArgumentNullException("viewer is null");
             }
 
-            if (viewersLastActiveTime.ContainsKey(Username))
+            if (viewersLastActiveTime.ContainsKey(viewer.UserId))
             {
-                viewersLastActiveTime[Username] = DateTime.Now;
+                viewersLastActiveTime[viewer.Username] = DateTime.Now;
             }
             else
             {
-                viewersLastActiveTime.Add(Username, DateTime.Now);
+                viewersLastActiveTime.Add(viewer.UserId, DateTime.Now);
             }
         }
 
         public static int MinutesSinceLastActive(Viewer viewer)
         {
-            if (viewer == null || !viewersLastActiveTime.ContainsKey(viewer.Username))
+            if (viewer == null || !viewersLastActiveTime.ContainsKey(viewer.UserId))
             {
                 throw new Exception("Cannot provide Minutes since viewer was last active since viewer has not been tracker.");
             }
 
-            TimeSpan timeSpan = DateTime.Now - viewersLastActiveTime[viewer.Username];
+            TimeSpan timeSpan = DateTime.Now - viewersLastActiveTime[viewer.UserId];
 
             return timeSpan.Minutes;
+        }
+
+        public static bool ViewerIsBeingTracker(Viewer viewer)
+        {
+            return viewersLastActiveTime.ContainsKey(viewer.UserId);
         }
     }
 }
