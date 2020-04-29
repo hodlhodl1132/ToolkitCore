@@ -137,6 +137,11 @@ namespace ToolkitCore
 
         private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
+            if (e.ChatMessage.Bits > 0)
+            {
+                Log.Message("Bits donated : " + e.ChatMessage.Bits);
+            }
+
             MessageLog.LogMessage(e.ChatMessage);
 
             if (Current.Game == null) return;
