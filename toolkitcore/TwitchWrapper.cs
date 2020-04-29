@@ -102,8 +102,6 @@ namespace ToolkitCore
 
         private static void OnWhisperReceived(object sender, OnWhisperReceivedArgs e)
         {
-            MessageLog.LogMessage(e.WhisperMessage);
-
             if (Current.Game == null ||  !ToolkitCoreSettings.allowWhispers) return;
 
             List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
@@ -112,6 +110,8 @@ namespace ToolkitCore
             {
                 receiver.ParseMessage(e.WhisperMessage as ITwitchMessage);
             }
+
+            MessageLog.LogMessage(e.WhisperMessage);
         }
 
         private static void OnWhisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
@@ -142,8 +142,6 @@ namespace ToolkitCore
                 Log.Message("Bits donated : " + e.ChatMessage.Bits);
             }
 
-            MessageLog.LogMessage(e.ChatMessage);
-
             if (Current.Game == null) return;
 
             List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
@@ -152,6 +150,8 @@ namespace ToolkitCore
             {
                 receiver.ParseMessage(e.ChatMessage);
             }
+
+            MessageLog.LogMessage(e.ChatMessage);
         }
 
         private static void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
