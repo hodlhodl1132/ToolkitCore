@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolkitCore.Controllers;
 using ToolkitCore.Utilities;
 using TwitchLib.Client.Models;
 
@@ -25,7 +26,10 @@ namespace ToolkitCore.Models
 
             LastChatMessages.Add(chatMessage);
 
-            ViewerTracker.UpdateViewer(chatMessage.Username);
+            if (ViewerController.ViewerExists(chatMessage.Username))
+            {
+                ViewerTracker.UpdateViewer(ViewerController.GetViewer(chatMessage.Username));
+            }
         }
 
         public static void LogMessage(WhisperMessage whisperMessage)
