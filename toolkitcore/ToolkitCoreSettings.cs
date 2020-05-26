@@ -128,7 +128,7 @@ namespace ToolkitCore
 
             label.y += verticalSpacing;
 
-            Widgets.Label(label, "Send Message to Chat on Connection:");
+            Widgets.Label(label, "Send Connection Message:");
 
             input.y = label.y;
 
