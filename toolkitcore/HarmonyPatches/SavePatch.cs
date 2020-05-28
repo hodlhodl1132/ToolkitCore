@@ -13,19 +13,36 @@ namespace ToolkitCore.HarmonyPatches
     {
         static SavePatch()
         {
-            new Harmony("com.rimworld.mod.hodlhodl.toolkit.core")
-                .Patch(
+            Harmony harmony = new Harmony("com.rimworld.mod.hodlhodl.toolkit.core");
+
+            Harmony.DEBUG = true;
+
+            harmony.Patch(
                     original: AccessTools.Method(
                             type: typeof(GameDataSaveLoader),
                             name: "SaveGame"),
                     postfix: new HarmonyMethod(typeof(SavePatch), nameof(SaveGame_PostFix))
                 );
+
+            harmony.Patch(
+                original: AccessTools.Method(
+                        type: typeof(GameDataSaveLoader),
+                        name: "LoadGame",
+                        new Type[] { typeof(string) }),
+                postfix: new HarmonyMethod(typeof(SavePatch), nameof(LoadGame_PostFix))
+            );
         }
 
         static void SaveGame_PostFix()
         {
             Database.DatabaseController.SaveToolkit();
             ToolkitData.globalDatabase.Write();
+        }
+
+        static void LoadGame_PostFix()
+        {
+            Log.Message("Running ToolkitCore loadgame_postfix");
+            Database.DatabaseController.LoadToolkit();
         }
     }
 }

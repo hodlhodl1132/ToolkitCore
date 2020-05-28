@@ -43,9 +43,9 @@ namespace ToolkitCore.Database
                 return;
             }
 
-            fileName = $"{mod.Content.Name.Replace(" ", "")}_{fileName}";
+            fileName = $"{mod.Content.Name.Replace(" ", "")}_{fileName}.json";
 
-            string json = JsonConvert.SerializeObject(obj);
+            string json = JsonConvert.SerializeObject(obj, Formatting.Indented);
 
             SaveFile(json, fileName);
         }
@@ -60,7 +60,7 @@ namespace ToolkitCore.Database
                 return false;
             }
 
-            fileName = $"{mod.Content.Name.Replace(" ", "")}_{fileName}";
+            fileName = $"{mod.Content.Name.Replace(" ", "")}_{fileName}.json";
 
             if (!LoadFile(fileName, out string json))
             {
