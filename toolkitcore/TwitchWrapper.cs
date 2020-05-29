@@ -159,7 +159,7 @@ namespace ToolkitCore
 
         private static void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
-            if (Current.Game == null) return;
+            if (Current.Game == null || ToolkitCoreSettings.forceWhispers) return;
 
             ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
 

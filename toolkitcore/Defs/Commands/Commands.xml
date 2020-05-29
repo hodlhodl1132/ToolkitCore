@@ -5,7 +5,7 @@
     <commandText>hello</commandText>
     <enabled>true</enabled>
     <commandClass>ToolkitCore.CommandMethods.HelloWorld</commandClass>
-    <requiresMod>false</requiresMod>
-    <requiresBroadcaster>true</requiresBroadcaster>
+    <requiresMod>true</requiresMod>
+    <requiresBroadcaster>false</requiresBroadcaster>
   </ToolkitCore.Models.ToolkitChatCommand>
 </Defs>

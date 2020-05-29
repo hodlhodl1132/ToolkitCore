@@ -27,7 +27,7 @@ namespace ToolkitCore.Models
             if (command.requiresBroadcaster && twitchCommand.ChatMessage != null && !twitchCommand.ChatMessage.IsBroadcaster) return false;
 
             // If command requires moderator status and message not from broadcaster or moderator
-            if (command.requiresMod && twitchCommand.ChatMessage != null && (!twitchCommand.ChatMessage.IsBroadcaster || !twitchCommand.ChatMessage.IsModerator)) return false;
+            if (command.requiresMod && twitchCommand.ChatMessage != null && (!twitchCommand.ChatMessage.IsBroadcaster && !twitchCommand.ChatMessage.IsModerator)) return false;
 
             return true;
         }

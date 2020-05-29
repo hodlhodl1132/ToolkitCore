@@ -13,6 +13,7 @@ namespace ToolkitCore
 
         public static bool connectOnGameStartup = false;
         public static bool allowWhispers = true;
+        public static bool forceWhispers = false;
 
         public static bool sendMessageToChatOnStartup = true;
 
@@ -95,7 +96,7 @@ namespace ToolkitCore
 
             Widgets.Label(label, "Status:");
 
-            Rect connectionButton = new Rect(input.x, input.y + verticalSpacing, input.width, verticalHeight);
+            Rect connectionButton = new Rect(input.x + input.width + WidgetRow.LabelGap, input.y, input.width, verticalHeight);
 
             if (TwitchWrapper.Client != null && TwitchWrapper.Client.IsConnected)
             {
@@ -110,7 +111,7 @@ namespace ToolkitCore
                 if (Widgets.ButtonText(connectionButton, "Connect")) TwitchWrapper.StartAsync();
             }
 
-            label.y += verticalSpacing * 3;
+            label.y += verticalSpacing;
 
             Widgets.Label(label, "Auto Connect on Startup:");
 
@@ -125,6 +126,14 @@ namespace ToolkitCore
             input.y = label.y;
 
             Widgets.Checkbox(input.position, ref allowWhispers);
+
+            label.y += verticalSpacing;
+
+            Widgets.Label(label, "Force Viewers to Whisper:");
+
+            input.y = label.y;
+
+            Widgets.Checkbox(input.position, ref forceWhispers);
 
             label.y += verticalSpacing;
 
@@ -143,6 +152,7 @@ namespace ToolkitCore
             Scribe_Values.Look(ref connectOnGameStartup, "connectOnGameStartup", false);
             Scribe_Values.Look(ref allowWhispers, "allowWhispers", true);
             Scribe_Values.Look(ref sendMessageToChatOnStartup, "sendMessageToChatOnStartup", true);
+            Scribe_Values.Look(ref forceWhispers, "forceWhispers", false);
         }
 
         bool showOauth = false;
