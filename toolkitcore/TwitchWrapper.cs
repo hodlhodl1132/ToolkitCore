@@ -132,7 +132,10 @@ namespace ToolkitCore
 
         private static void OnJoinedChannel(object sender, OnJoinedChannelArgs e)
         {
-            Client.SendMessage(e.Channel, "Toolkit Core has Connected to Chat");
+            if (ToolkitCoreSettings.sendMessageToChatOnStartup)
+            {
+                Client.SendMessage(e.Channel, "Toolkit Core has Connected to Chat");
+            }
         }
 
         private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)

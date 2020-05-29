@@ -29,7 +29,7 @@ namespace ToolkitCore.Windows
             listing.End();
         }
 
-        public override Vector2 RequestedTabSize => new Vector2(300f, 100f + (AddonRegistry.ToolkitAddons.Count * 24f) );
+        public override Vector2 RequestedTabSize => new Vector2(300f, 100f + (AddonRegistry.ToolkitAddons.Count * 32f) );
 
         public override MainTabWindowAnchor Anchor => MainTabWindowAnchor.Right;
     }

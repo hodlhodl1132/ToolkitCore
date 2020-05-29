@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -32,6 +33,44 @@ namespace ToolkitCore.Database
         public static void LoadToolkit()
         {
 
+        }
+
+        public static void SaveObject(object obj, string fileName, Mod mod)
+        {
+            if (mod.Content.Name == null)
+            {
+                Log.Error("Mod has no name");
+                return;
+            }
+
+            fileName = $"{mod.Content.Name.Replace(" ", "")}_{fileName}";
+
+            string json = JsonConvert.SerializeObject(obj);
+
+            SaveFile(json, fileName);
+        }
+
+        public static bool LoadObject<T>(string fileName, Mod mod, out T obj)
+        {
+            obj = default;
+
+            if (mod.Content.Name == null)
+            {
+                Log.Error("Mod has no name");
+                return false;
+            }
+
+            fileName = $"{mod.Content.Name.Replace(" ", "")}_{fileName}";
+
+            if (!LoadFile(fileName, out string json))
+            {
+                Log.Warning($"Tried to load {fileName} but could not find file");
+                return false;
+            }
+
+            obj = JsonConvert.DeserializeObject<T>(json);
+
+            return true;
         }
 
         public static bool SaveFile(string json, string fileName)

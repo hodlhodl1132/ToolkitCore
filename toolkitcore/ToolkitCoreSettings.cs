@@ -14,6 +14,8 @@ namespace ToolkitCore
         public static bool connectOnGameStartup = false;
         public static bool allowWhispers = true;
 
+        public static bool sendMessageToChatOnStartup = true;
+
         public void DoWindowContents(Rect inRect)
         {
             Rect helpButton = new Rect(inRect.width - 120f, verticalSpacing, 90f, verticalHeight);
@@ -123,6 +125,14 @@ namespace ToolkitCore
             input.y = label.y;
 
             Widgets.Checkbox(input.position, ref allowWhispers);
+
+            label.y += verticalSpacing;
+
+            Widgets.Label(label, "Send Message to Chat on Connection:");
+
+            input.y = label.y;
+
+            Widgets.Checkbox(input.position, ref sendMessageToChatOnStartup);
         }
 
         public override void ExposeData()
@@ -132,6 +142,7 @@ namespace ToolkitCore
             Scribe_Values.Look(ref oauth_token, "oauth_token", "");
             Scribe_Values.Look(ref connectOnGameStartup, "connectOnGameStartup", false);
             Scribe_Values.Look(ref allowWhispers, "allowWhispers", true);
+            Scribe_Values.Look(ref sendMessageToChatOnStartup, "sendMessageToChatOnStartup", true);
         }
 
         bool showOauth = false;
