@@ -17,6 +17,10 @@ namespace ToolkitCore
 
         public static bool sendMessageToChatOnStartup = true;
 
+        // Mixer
+        public static string mixerAccessToken = "";
+        public static string mixerUsername = "";
+
         public void DoWindowContents(Rect inRect)
         {
             Rect helpButton = new Rect(inRect.width - 120f, verticalSpacing, 90f, verticalHeight);
@@ -153,6 +157,10 @@ namespace ToolkitCore
             Scribe_Values.Look(ref allowWhispers, "allowWhispers", true);
             Scribe_Values.Look(ref sendMessageToChatOnStartup, "sendMessageToChatOnStartup", true);
             Scribe_Values.Look(ref forceWhispers, "forceWhispers", false);
+
+            //Mixer
+            Scribe_Values.Look(ref mixerAccessToken, "mixerAccessToken");
+            Scribe_Values.Look(ref mixerUsername, "mixerUsername");
         }
 
         bool showOauth = false;

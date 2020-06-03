@@ -35,6 +35,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddonMenu.cs" />
+    <Compile Include="CommandInterfaceBase.cs" />
     <Compile Include="CommandMethods\HelloWorld.cs" />
     <Compile Include="Controllers\ChatCommandController.cs" />
     <Compile Include="Controllers\ViewerController.cs" />
@@ -42,24 +43,49 @@
     <Compile Include="Database\GlobalDatabase.cs" />
     <Compile Include="HarmonyPatches\SavePatch.cs" />
     <Compile Include="Interfaces\IAddonMenu.cs" />
+    <Compile Include="Interfaces\ICommand.cs" />
+    <Compile Include="Interfaces\IMessage.cs" />
+    <Compile Include="MessageInterfaceBase.cs" />
+    <Compile Include="MixerWrapper.cs" />
     <Compile Include="Models\MessageLog.cs" />
+    <Compile Include="Models\Mixer\AuthKeyResponse.cs" />
+    <Compile Include="Models\Mixer\AuthMethod.cs" />
+    <Compile Include="Models\Mixer\ChannelResponse.cs" />
+    <Compile Include="Models\Mixer\ChatCommandEvent.cs" />
+    <Compile Include="Models\Mixer\ChatMessageEvent.cs" />
+    <Compile Include="Models\Mixer\ChatMethod.cs" />
+    <Compile Include="Models\Mixer\MixerAuthReply.cs" />
+    <Compile Include="Models\Mixer\MixerEvent.cs" />
+    <Compile Include="Models\Mixer\MixerReply.cs" />
+    <Compile Include="Models\Mixer\MixerWebSocketClient.cs" />
+    <Compile Include="Models\Mixer\MsgMethod.cs" />
+    <Compile Include="Models\Mixer\OnMessageEventArgs.cs" />
+    <Compile Include="Models\Services.cs" />
     <Compile Include="Models\ToolkitAddon.cs" />
     <Compile Include="Models\ToolkitChatCommand.cs" />
     <Compile Include="Models\CommandMethod.cs" />
+    <Compile Include="Models\Twitch\ChatMessageEvent.cs" />
+    <Compile Include="Models\Twitch\ChatCommandEvent.cs" />
     <Compile Include="Models\Viewer.cs" />
     <Compile Include="TwitchWrapper.cs" />
     <Compile Include="ToolkitCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ToolkitCoreSettings.cs" />
     <Compile Include="TwitchInterfaceBase.cs" />
+    <Compile Include="Utilities\CommandInterface.cs" />
+    <Compile Include="Utilities\MessageInterface.cs" />
     <Compile Include="Utilities\ViewerTracker.cs" />
     <Compile Include="Utilities\AddonRegistry.cs" />
     <Compile Include="Utilities\CommandFilter.cs" />
     <Compile Include="Utilities\TCText.cs" />
     <Compile Include="Utilities\ViewerInterface.cs" />
+    <Compile Include="Windows\GlobalSettingsWidget.cs" />
     <Compile Include="Windows\MainTabWindow_ToolkitCore.cs" />
+    <Compile Include="Windows\MixerSettingsWidget.cs" />
+    <Compile Include="Windows\TwitchSettingsWidget.cs" />
     <Compile Include="Windows\Window_MessageLog.cs" />
     <Compile Include="Windows\Window_ModSettings.cs" />
+    <Compile Include="Windows\Window_Services.cs" />
   </ItemGroup>
   <ItemGroup>
     <!-- Using ContentWithTargetPath+TargetPath rather than Content+Link because the latter apparently must have the Link path be within OutputDir -->

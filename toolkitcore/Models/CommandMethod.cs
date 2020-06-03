@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolkitCore.Interfaces;
 using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
 using Verse;
@@ -33,6 +34,16 @@ namespace ToolkitCore.Models
         }
 
         public virtual void Execute(ITwitchCommand twitchCommand)
+        {
+
+        }
+
+        public virtual bool CanExecute(ICommand command)
+        {
+            return false;
+        }
+
+        public virtual void Execute(ICommand command)
         {
 
         }

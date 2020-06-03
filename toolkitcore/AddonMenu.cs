@@ -21,6 +21,24 @@ namespace ToolkitCore
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
             }),
+            new FloatMenuOption("Services", delegate ()
+            {
+                Window_Services window = new Window_Services();
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }),
+            new FloatMenuOption("Twitch", delegate ()
+            {
+                Window_Services window = new Window_Services(Window_Services.Tab.Twitch);
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }),
+            new FloatMenuOption("Mixer", delegate ()
+            {
+                Window_Services window = new Window_Services(Window_Services.Tab.Mixer);
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }),
             new FloatMenuOption("Message Log", delegate()
             {
                 Window_MessageLog window = new Window_MessageLog();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolkitCore.Interfaces;
 using TwitchLib.Client.Enums;
 using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
@@ -31,6 +32,24 @@ namespace ToolkitCore.Models
                 if (!method.CanExecute(twitchCommand)) return false;
 
                 method.Execute(twitchCommand);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+            }
+
+            return true;
+        }
+
+        public bool TryExecute(ICommand command)
+        {
+            try
+            {
+                CommandMethod method = (CommandMethod)Activator.CreateInstance(commandClass, this);
+
+                if (!method.CanExecute(command)) return false;
+
+                method.Execute(command);
             }
             catch (Exception e)
             {

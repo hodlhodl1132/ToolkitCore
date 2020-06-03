@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using ToolkitCore.Controllers;
 using ToolkitCore.Models;
+using ToolkitCore.Models.Twitch;
 using ToolkitCore.Utilities;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
@@ -78,8 +79,8 @@ namespace ToolkitCore
             // Bind Messages and Whispers
             Client.OnMessageReceived += OnMessageReceived;
             Client.OnWhisperReceived += OnWhisperReceived;
-            Client.OnWhisperCommandReceived += OnWhisperCommandReceived;
-            Client.OnChatCommandReceived += OnChatCommandReceived;
+            //Client.OnWhisperCommandReceived += OnWhisperCommandReceived;
+            //Client.OnChatCommandReceived += OnChatCommandReceived;
 
             // Bind Misc Events
             Client.OnBeingHosted += OnBeingHosted;
@@ -104,26 +105,44 @@ namespace ToolkitCore
         {
             if (Current.Game == null ||  !ToolkitCoreSettings.allowWhispers) return;
 
-            List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
-
-            foreach (TwitchInterfaceBase receiver in receivers)
+            if (!e.WhisperMessage.Message.StartsWith("!"))
             {
-                receiver.ParseMessage(e.WhisperMessage as ITwitchMessage);
-            }
+                ChatMessageEvent chatMessage = new ChatMessageEvent()
+                {
+                    whisper = true,
+                    TwitchMessage = e.WhisperMessage
+                };
 
-            MessageLog.LogMessage(e.WhisperMessage);
+                foreach (MessageInterfaceBase receiver in Current.Game.components.OfType<MessageInterfaceBase>())
+                {
+                    receiver.ParseMessage(chatMessage);
+                }
+            }
+            else
+            {
+                ChatCommandEvent chatCommand = new ChatCommandEvent()
+                {
+                    whisper = true,
+                    TwitchMessage = e.WhisperMessage
+                };
+
+                foreach (CommandInterfaceBase reciever in Current.Game.components.OfType<CommandInterfaceBase>())
+                {
+                    reciever.ParseCommand(chatCommand);
+                }
+            }
         }
 
         private static void OnWhisperCommandReceived(object sender, OnWhisperCommandReceivedArgs e)
         {
-            if (Current.Game == null || !ToolkitCoreSettings.allowWhispers) return;
+            //if (Current.Game == null || !ToolkitCoreSettings.allowWhispers) return;
 
-            ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
+            //ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
 
-            if (chatCommand != null)
-            {
-                chatCommand.TryExecute(e.Command as ITwitchCommand);
-            }
+            //if (chatCommand != null)
+            //{
+            //    chatCommand.TryExecute(e.Command as ITwitchCommand);
+            //}
         }
 
         private static void OnConnected(object sender, OnConnectedArgs e)
@@ -140,33 +159,57 @@ namespace ToolkitCore
 
         private static void OnMessageReceived(object sender, OnMessageReceivedArgs e)
         {
-            if (e.ChatMessage.Bits > 0)
-            {
-                Log.Message("Bits donated : " + e.ChatMessage.Bits);
-            }
-
             if (Current.Game == null) return;
 
-            List<TwitchInterfaceBase> receivers = Current.Game.components.OfType<TwitchInterfaceBase>().ToList();
-
-            foreach (TwitchInterfaceBase receiver in receivers)
+            if (!e.ChatMessage.Message.StartsWith("!"))
             {
-                receiver.ParseMessage(e.ChatMessage);
+                ChatMessageEvent chatMessage = new ChatMessageEvent()
+                {
+                    whisper = false,
+                    TwitchMessage = e.ChatMessage
+                };
+
+                foreach (MessageInterfaceBase receiver in Current.Game.components.OfType<MessageInterfaceBase>())
+                {
+                    receiver.ParseMessage(chatMessage);
+                }
+            }
+            else
+            {
+                ChatCommandEvent chatCommand = new ChatCommandEvent()
+                {
+                    whisper = false,
+                    TwitchMessage = e.ChatMessage
+                };
+
+                foreach (CommandInterfaceBase reciever in Current.Game.components.OfType<CommandInterfaceBase>())
+                {
+                    reciever.ParseCommand(chatCommand);
+                }
             }
 
-            MessageLog.LogMessage(e.ChatMessage);
         }
 
         private static void OnChatCommandReceived(object sender, OnChatCommandReceivedArgs e)
         {
-            if (Current.Game == null || ToolkitCoreSettings.forceWhispers) return;
+            //if (Current.Game == null || ToolkitCoreSettings.forceWhispers) return;
 
-            ToolkitChatCommand chatCommand = ChatCommandController.GetChatCommand(e.Command.CommandText);
+            //Log.Message(e.Command.Message);
 
-            if (chatCommand != null)
-            {
-                chatCommand.TryExecute(e.Command as ITwitchCommand);
-            }
+            //ChatCommandEvent chatCommand = new ChatCommandEvent()
+            //{
+            //    whisper = false,
+            //    TwitchMessage = e.Command as ITwitchMessage
+            //};
+
+            //Log.Message("converted");
+
+            //Log.Message(chatCommand.TwitchMessage.Message);
+
+            //foreach (CommandInterfaceBase reciever in Current.Game.components.OfType<CommandInterfaceBase>())
+            //{
+            //    reciever.ParseCommand(chatCommand);
+            //}
         }
 
         public static void OnBeingHosted(object sender, OnBeingHostedArgs e)
