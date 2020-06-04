@@ -13,45 +13,91 @@ namespace ToolkitCore.Windows
     {
         public static void OnGUI(Rect inRect)
         {
-            Rect label = new Rect(0f, 0f, 200f, 24f);
-            Rect value = new Rect(204f, 0f, 200f, 24f);
+            Color cCache = GUI.color;
+            float midpoint = inRect.width / 2f;
+            Rect leftColumn = new Rect(0f, 0f, midpoint - 10f, inRect.height);
+            Rect rightColumn = new Rect(midpoint + 10f, 0f, midpoint - 10f, inRect.height);
+            Rect rightColumnInner = new Rect(0f, 0f, rightColumn.width, rightColumn.height);
+            Rect separator = new Rect(midpoint - 0.5f, 0f, 1f, inRect.height);
+            
+            GUI.color = new Color(0.22f, 0.22f, 0.22f, 0.75f);
+            Widgets.DrawLineVertical(separator.x, separator.y, separator.height);
+            GUI.color = cCache;
 
-            Widgets.Label(label, "Mixer Username:");
-            ToolkitCoreSettings.mixerUsername = Widgets.TextField(value, ToolkitCoreSettings.mixerUsername);
+            GUI.BeginGroup(leftColumn);
+            DrawLeftColumn(leftColumn);
+            GUI.EndGroup();
 
-            label.y += label.height;
-            value.y += value.height;
+            GUI.BeginGroup(rightColumn);
+            DrawRightColumn(rightColumnInner);
+            GUI.EndGroup();
+        }
 
-            Widgets.Label(label, "Mixer AuthKey:");
-            ToolkitCoreSettings.mixerAccessToken = Widgets.TextField(value, ToolkitCoreSettings.mixerAccessToken);
+        private static void DrawLeftColumn(Rect columnRect)
+        {
+            Listing_Standard listing = new Listing_Standard();
+            listing.Begin(columnRect);
+            
+            (Rect channelLabel, Rect channelField) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
+            Widgets.Label(channelLabel, "Username:");
+            ToolkitCoreSettings.mixerUsername = Widgets.TextField(channelField, ToolkitCoreSettings.mixerUsername);
 
-            Rect newAuthKey = new Rect(value);
-            newAuthKey.x += 4f + newAuthKey.width;
+            listing.Gap(8f);
+            (Rect tokenLabel, Rect tokenField) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
+            Widgets.Label(tokenLabel, "OAuth Token:");
 
-            if (Widgets.ButtonText(newAuthKey, "New Auth Key"))
+            if (showToken)
+            {
+                ToolkitCoreSettings.mixerAccessToken = Widgets.TextField(tokenField, ToolkitCoreSettings.mixerAccessToken);
+            }
+            else
+            {
+                Widgets.Label(tokenField, new string('*', Math.Min(ToolkitCoreSettings.mixerAccessToken.Length, 16)));
+            }
+
+            SettingsHelper.DrawShowButton(tokenField, ref showToken);
+            
+            (Rect _, Rect tknBtn) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
+            (Rect _, Rect pasteBtn) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
+
+            if (Widgets.ButtonText(tknBtn, "New OAuth Token"))
             {
                 Application.OpenURL("https://mixertokengenerator.com/?code=GwzpS4SGkHJLEzZS&state=frontend%7Cbmsxd25aWnphRWZRMTlFK09SdWl3dz09%7C23%2C25%2C34");
             }
 
-            label.y += label.height;
-            value.y += value.height;
-
-            string statusLabel = MixerWrapper.Connected() ? TCText.ColoredText("Connected", ColorLibrary.BrightGreen) : TCText.ColoredText("Disconnected", ColorLibrary.BrickRed);
-
-            Widgets.Label(label, "Status:");
-            Widgets.Label(value, statusLabel);
-
-            Rect connectionButton = new Rect(newAuthKey);
-            connectionButton.y += connectionButton.height;
-
-            if (MixerWrapper.Connected() && Widgets.ButtonText(connectionButton, "Reconnect"))
+            if (Widgets.ButtonText(pasteBtn, "Paste from Clipboard"))
             {
-
+                ToolkitCoreSettings.mixerAccessToken = GUIUtility.systemCopyBuffer;
             }
-            else if (Widgets.ButtonText(connectionButton, "Connect"))
+            
+            listing.End();
+        }
+
+        private static void DrawRightColumn(Rect columnRect)
+        {
+            Listing_Standard listing = new Listing_Standard();
+            listing.Begin(columnRect);
+            
+            (Rect statusLabel, Rect statusField) = listing.GetRect(Text.LineHeight).ToForm();
+            Widgets.Label(statusLabel, "Status:");
+
+            string statusText = MixerWrapper.Connected() ? TCText.ColoredText("Connected", ColorLibrary.BrightGreen) : TCText.ColoredText("Disconnected", Color.red);
+            SettingsHelper.DrawLabelAnchored(statusField, statusText, TextAnchor.MiddleCenter);
+
+            (Rect _, Rect connBtn) = listing.GetRect(Text.LineHeight).ToForm();
+
+            if (MixerWrapper.Connected() && Widgets.ButtonText(connBtn, "Reconnect"))
+            {
+                
+            }
+            else if (Widgets.ButtonText(connBtn, "Connect"))
             {
                 MixerWrapper.InitializeClient();
             }
+            
+            listing.End();
         }
+
+        private static bool showToken;
     }
 }
