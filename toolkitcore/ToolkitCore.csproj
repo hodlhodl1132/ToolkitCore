@@ -74,6 +74,7 @@
     <Compile Include="TwitchInterfaceBase.cs" />
     <Compile Include="Utilities\CommandInterface.cs" />
     <Compile Include="Utilities\MessageInterface.cs" />
+    <Compile Include="Utilities\SettingsHelper.cs" />
     <Compile Include="Utilities\ViewerTracker.cs" />
     <Compile Include="Utilities\AddonRegistry.cs" />
     <Compile Include="Utilities\CommandFilter.cs" />
@@ -106,6 +107,14 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <TargetPath>..\Defs\Addon.xml</TargetPath>
       <SubType>Designer</SubType>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="Textures\UI\Icons\Visible.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\Textures\UI\Icons\Visible.png</TargetPath>
+    </ContentWithTargetPath>
+    <ContentWithTargetPath Include="Textures\UI\Icons\Hidden.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>..\Textures\UI\Icons\Hidden.png</TargetPath>
     </ContentWithTargetPath>
   </ItemGroup>
   <ItemGroup>
