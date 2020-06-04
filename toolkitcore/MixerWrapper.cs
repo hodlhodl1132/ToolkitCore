@@ -195,5 +195,20 @@ namespace ToolkitCore
 
             WebSocket.Send(json);
         }
+
+        internal static void SendChatMessage(string message)
+        {
+            if (!Connected())
+            {
+                Log.Error("Cannot send Mixer message");
+                return;
+            }
+
+            MsgMethod msgMethod = new MsgMethod(message);
+
+            string json = JsonConvert.SerializeObject(msgMethod);
+
+            WebSocket.Send(json);
+        }
     }
 }
