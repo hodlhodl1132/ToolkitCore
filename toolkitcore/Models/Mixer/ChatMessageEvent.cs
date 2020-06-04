@@ -30,6 +30,16 @@ namespace ToolkitCore.Models.Mixer
         {
             return false;
         }
+
+        public bool IsModerator()
+        {
+            return data.user_roles.Contains("Mod");
+        }
+
+        public bool IsBroadcaster()
+        {
+            return data.user_roles.Contains("Owner");
+        }
     }
 
     [Serializable]

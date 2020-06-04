@@ -16,5 +16,9 @@ namespace ToolkitCore.Interfaces
         Service Service();
 
         bool Whisper();
+
+        bool IsBroadcaster();
+
+        bool IsModerator();
     }
 }

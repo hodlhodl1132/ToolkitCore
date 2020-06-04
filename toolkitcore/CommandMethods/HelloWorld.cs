@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ToolkitCore.Interfaces;
 using ToolkitCore.Models;
+using ToolkitCore.Utilities;
 using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
 
@@ -16,16 +18,14 @@ namespace ToolkitCore.CommandMethods
             
         }
 
-        public override bool CanExecute(ITwitchCommand twitchCommand)
+        public override bool CanExecute(ICommand command)
         {
-            if (!base.CanExecute(twitchCommand)) return false;
-
-            return true;
+            return base.CanExecute(command);
         }
 
-        public override void Execute(ITwitchCommand twitchCommand)
+        public override void Execute(ICommand command)
         {
-            TwitchWrapper.SendChatMessage("Hello World!");
+            MessageSender.SendMessage("Hello World!", command.Service());
         }
     }
 }

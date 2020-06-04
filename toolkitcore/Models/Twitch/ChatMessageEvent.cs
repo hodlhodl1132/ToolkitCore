@@ -31,6 +31,26 @@ namespace ToolkitCore.Models.Twitch
             return whisper;
         }
 
+        public bool IsModerator()
+        {
+            if (TwitchMessage.ChatMessage != null)
+            {
+                return TwitchMessage.ChatMessage.IsModerator;
+            }
+
+            return false;
+        }
+
+        public bool IsBroadcaster()
+        {
+            if (TwitchMessage.ChatMessage != null)
+            {
+                return TwitchMessage.ChatMessage.IsBroadcaster;
+            }
+
+            return false;
+        }
+
         public bool whisper { get; set; }
 
         public ITwitchMessage TwitchMessage { get; set; }

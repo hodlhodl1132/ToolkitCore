@@ -1,21 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using ToolkitCore.Controllers;
-using ToolkitCore.Models;
 using ToolkitCore.Models.Twitch;
-using ToolkitCore.Utilities;
 using TwitchLib.Client;
 using TwitchLib.Client.Events;
-using TwitchLib.Client.Interfaces;
 using TwitchLib.Client.Models;
-using TwitchLib.Client.Models.Interfaces;
 using TwitchLib.Communication.Clients;
 using TwitchLib.Communication.Events;
 using TwitchLib.Communication.Models;
-using UnityEngine;
 using Verse;
 
 namespace ToolkitCore

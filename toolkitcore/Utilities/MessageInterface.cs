@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolkitCore.Interfaces;
+using ToolkitCore.Models;
 using Verse;
+using static ToolkitCore.Models.Services;
 
 namespace ToolkitCore.Utilities
 {

@@ -23,24 +23,6 @@ namespace ToolkitCore.Models
 
         public bool requiresBroadcaster;
 
-        public bool TryExecute(ITwitchCommand twitchCommand)
-        {
-            try
-            {
-                CommandMethod method = (CommandMethod)Activator.CreateInstance(commandClass, this);
-
-                if (!method.CanExecute(twitchCommand)) return false;
-
-                method.Execute(twitchCommand);
-            }
-            catch (Exception e)
-            {
-                Log.Error(e.Message);
-            }
-
-            return true;
-        }
-
         public bool TryExecute(ICommand command)
         {
             try
