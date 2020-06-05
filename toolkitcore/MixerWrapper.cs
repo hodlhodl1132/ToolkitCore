@@ -15,7 +15,7 @@ namespace ToolkitCore
     [StaticConstructorOnStartup]
     public static class MixerWrapper
     {
-        static readonly string MixerApiBaseUrl = "https://mixer.com/api/v1/";
+        internal static readonly string MixerApiBaseUrl = "https://mixer.com/api/v1/";
 
         public static int ChannelId { get; set; }
 
@@ -73,13 +73,6 @@ namespace ToolkitCore
 
         static async Task GetAuthKey()
         {
-            Uri uri = new Uri($"{MixerApiBaseUrl}chats/{ChannelId}");
-
-            foreach (var key in WebClient.Headers.Keys)
-            {
-                Log.Message($"Header: {key} - {WebClient.Headers.Get(key.ToString())}");
-            }
-
             string json = await WebClient.DownloadStringTaskAsync(new Uri($"{MixerApiBaseUrl}chats/{ChannelId}"));
 
             Log.Message($"AuthKey Reponse: {json}");
@@ -89,6 +82,11 @@ namespace ToolkitCore
             Log.Message($"Mixer Auth Key: {response.authkey}");
 
             AuthKeyResponse = response;
+        }
+
+        static async Task GetAccessToken()
+        {
+            string json = await WebClient.DownloadStringTaskAsync(new Uri($"{MixerApiBaseUrl}oauth/token"));
         }
 
         static void StartWebSocket()

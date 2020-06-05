@@ -60,6 +60,12 @@
     <Compile Include="Models\Mixer\MixerWebSocketClient.cs" />
     <Compile Include="Models\Mixer\MsgMethod.cs" />
     <Compile Include="Models\Mixer\OnMessageEventArgs.cs" />
+    <Compile Include="Models\Mixer\ShortcodeOAuth\OAuthShortcodeCheckResponse.cs" />
+    <Compile Include="Models\Mixer\ShortcodeOAuth\OAuthShortcodeRequest.cs" />
+    <Compile Include="Models\Mixer\ShortcodeOAuth\OAuthShortcodeResponse.cs" />
+    <Compile Include="Models\Mixer\ShortcodeOAuth\OAuthTokenRequest.cs" />
+    <Compile Include="Models\Mixer\ShortcodeOAuth\OAuthTokenResponse.cs" />
+    <Compile Include="Models\Mixer\ShortcodeOAuth\ShortcodeUtilities.cs" />
     <Compile Include="Models\Viewers.cs" />
     <Compile Include="Models\Services.cs" />
     <Compile Include="Models\ToolkitAddon.cs" />
@@ -82,6 +88,7 @@
     <Compile Include="Windows\GlobalSettingsWidget.cs" />
     <Compile Include="Windows\MainTabWindow_ToolkitCore.cs" />
     <Compile Include="Windows\MixerSettingsWidget.cs" />
+    <Compile Include="Windows\ShortcodeTestWindow.cs" />
     <Compile Include="Windows\TwitchSettingsWidget.cs" />
     <Compile Include="Windows\Window_MessageLog.cs" />
     <Compile Include="Windows\Window_ModSettings.cs" />

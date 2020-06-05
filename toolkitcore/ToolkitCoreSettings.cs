@@ -19,7 +19,10 @@ namespace ToolkitCore
 
         // Mixer
         public static string mixerAccessToken = "";
+        public static string mixerRefreshToken = "";
         public static string mixerUsername = "";
+
+        internal static string mixerClientID = "405b869d155f40d8bde397cd1d25695206b3633b9e1bb4fa";
 
         public void DoWindowContents(Rect inRect)
         {
@@ -160,6 +163,7 @@ namespace ToolkitCore
 
             //Mixer
             Scribe_Values.Look(ref mixerAccessToken, "mixerAccessToken");
+            Scribe_Values.Look(ref mixerRefreshToken, "mixerRefreshToken");
             Scribe_Values.Look(ref mixerUsername, "mixerUsername");
         }
 

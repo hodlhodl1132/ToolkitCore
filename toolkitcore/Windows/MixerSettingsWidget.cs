@@ -46,7 +46,7 @@ namespace ToolkitCore.Windows
             (Rect tokenLabel, Rect tokenField) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
             Widgets.Label(tokenLabel, "OAuth Token:");
 
-            if (showToken)
+            if (showAccessToken)
             {
                 ToolkitCoreSettings.mixerAccessToken = Widgets.TextField(tokenField, ToolkitCoreSettings.mixerAccessToken);
             }
@@ -55,7 +55,7 @@ namespace ToolkitCore.Windows
                 Widgets.Label(tokenField, new string('*', Math.Min(ToolkitCoreSettings.mixerAccessToken.Length, 16)));
             }
 
-            SettingsHelper.DrawShowButton(tokenField, ref showToken);
+            SettingsHelper.DrawShowButton(tokenField, ref showAccessToken);
             
             (Rect _, Rect tknBtn) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
             (Rect _, Rect pasteBtn) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
@@ -98,6 +98,6 @@ namespace ToolkitCore.Windows
             listing.End();
         }
 
-        private static bool showToken;
+        private static bool showAccessToken;
     }
 }

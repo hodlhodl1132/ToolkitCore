@@ -39,6 +39,12 @@ namespace ToolkitCore
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
             }),
+            new FloatMenuOption("TestingMixer", delegate()
+            {
+                ShortcodeTestWindow window = new ShortcodeTestWindow();
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }),
             new FloatMenuOption("Message Log", delegate()
             {
                 Window_MessageLog window = new Window_MessageLog();

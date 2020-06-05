@@ -20,10 +20,6 @@ namespace ToolkitCore.Utilities
 
         public override void ParseMessage(IMessage message)
         {
-            Log.Message($"{message.Username()}: {message.Message()}");
-
-            Log.Message("Trying to update viewer");
-
             if (ViewerController.ViewerExists(message.Service(), message.Username()))
             {
                 ViewerController.GetViewer(message.Service(), message.Username()).UpdateViewerFromMessage(message);
