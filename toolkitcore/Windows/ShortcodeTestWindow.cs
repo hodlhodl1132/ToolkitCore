@@ -11,6 +11,11 @@ namespace ToolkitCore.Windows
 {
     public class ShortcodeTestWindow : Window
     {
+        public ShortcodeTestWindow()
+        {
+            doCloseButton = true;
+        }
+
         public override void DoWindowContents(Rect inRect)
         {
             Listing_Standard listing = new Listing_Standard();
@@ -48,7 +53,7 @@ namespace ToolkitCore.Windows
                     }
                     else
                     {
-                        listing.Label("Checking Completion");
+                        listing.Label("Waiting for Completion, will check again momentarily. Code: " + code);
                     }
 
                     break;
@@ -73,6 +78,10 @@ namespace ToolkitCore.Windows
                 code = ShortcodeUtilities.OAuthShortcodeResponse.code;
                 needToEnterCode = true;
             }
+            else
+            {
+                Log.Error("Failed to retrieve short code");
+            }
         }
 
         async Task CheckShortcode()
@@ -82,6 +91,12 @@ namespace ToolkitCore.Windows
             {
                 step = ShortcodeStep.verifying;
                 _ = GetOAuthToken();
+            }
+            else
+            {
+                Log.Error("Did not detect shortcode was submitted yet or submitted improperly.");
+                await Task.Delay(15000);
+                _ = CheckShortcode();
             }
         }
 
@@ -93,6 +108,10 @@ namespace ToolkitCore.Windows
                 ToolkitCoreSettings.mixerAccessToken = ShortcodeUtilities.OAuthTokenResponse.access_token;
                 ToolkitCoreSettings.mixerRefreshToken = ShortcodeUtilities.OAuthTokenResponse.refresh_token;
                 step = ShortcodeStep.finished;
+            }
+            else
+            {
+                Log.Error("Tried to get AccessToken but auth key was not correct");
             }
         }
 

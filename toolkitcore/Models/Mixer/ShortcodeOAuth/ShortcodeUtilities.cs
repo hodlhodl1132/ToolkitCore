@@ -37,9 +37,16 @@ namespace ToolkitCore.Models.Mixer.ShortcodeOAuth
         {
             WebClient webClient = new WebClient();
             string jsonResponse = await webClient.DownloadStringTaskAsync($"{MixerWrapper.MixerApiBaseUrl}oauth/shortcode/check/{OAuthShortcodeResponse.handle}");
+
+            if (jsonResponse == string.Empty)
+            {
+                return false;
+            }
+
             OAuthShortcodeCheckResponse response = JsonConvert.DeserializeObject<OAuthShortcodeCheckResponse>(jsonResponse);
             if (response.code != null)
             {
+                Log.Message(response.code);
                 OAuthShortcodeCheckResponse = response;
                 return true;
             }
