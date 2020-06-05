@@ -5,35 +5,35 @@ using System.Text;
 using System.Threading.Tasks;
 using ToolkitCore.Models;
 using Verse;
+using static ToolkitCore.Models.Services;
 
 namespace ToolkitCore.Controllers
 {
     public static class ViewerController
     {
-        public static Viewer CreateViewer(string Username)
+        public static Viewer GetViewer(Service service, string username)
         {
-            if (ViewerExists(Username))
+            if (ViewerList.Instance.All == null)
             {
-                throw new Exception("Viewer already exists");
+                ViewerList.Instance.All = new List<Viewer>();
+                return null;
             }
 
-            Viewer viewer = new Viewer(Username);
-
-            Viewers.All.Add(viewer);
-
-            return viewer;
+            return ViewerList.Instance.All.Find((v) => v.Service == service && v.Username == username);
         }
 
-        public static Viewer GetViewer(string Username)
+        public static bool ViewerExists(Service service, string username)
         {
-            Viewer viewer = Viewers.All.Find(vwr => vwr.Username == Username);
-
-            return viewer;
+            return GetViewer(service, username) != null;
         }
 
-        public static bool ViewerExists(string Username)
+        public static Viewer CreateViewer(Service service, string username)
         {
-            return Viewers.All.Find((x) => x.Username == Username) != null;
+            return new Viewer()
+            {
+                Service = service,
+                Username = username
+            };
         }
     }
 }

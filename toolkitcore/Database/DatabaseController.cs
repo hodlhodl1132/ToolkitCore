@@ -27,7 +27,7 @@ namespace ToolkitCore.Database
 
         public static void SaveToolkit()
         {
-            AllViewers.SaveViewers();
+            ViewerManager.SaveViewers();
         }
 
         public static void LoadToolkit()

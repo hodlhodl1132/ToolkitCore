@@ -4,42 +4,38 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ToolkitCore.Controllers;
+using ToolkitCore.Interfaces;
 using ToolkitCore.Utilities;
 using TwitchLib.Client.Models;
 
 namespace ToolkitCore.Models
 {
-    public static class MessageLog
+    public static class MessageLogger
     {
-        static readonly int chatMessageQueueLength = 10;
-        static readonly int whisperMessageQueueLength = 5;
+        static readonly int LogLength = 10;
 
-        public static List<ChatMessage> LastChatMessages { get; } = new List<ChatMessage>(chatMessageQueueLength);
-        public static List<WhisperMessage> LastWhisperMessages { get; } = new List<WhisperMessage>(whisperMessageQueueLength);
+        public static List<ICommand> CommandLog { get; set; } = new List<ICommand>();
 
-        public static void LogMessage(ChatMessage chatMessage)
+        public static List<IMessage> MessageLog { get; set; } = new List<IMessage>();
+
+        public static void LogCommand(ICommand command)
         {
-            if (LastChatMessages.Count >= chatMessageQueueLength - 1)
+            if (CommandLog.Count + 1 > LogLength)
             {
-                LastChatMessages.RemoveAt(0);
+                CommandLog.RemoveAt(0);
             }
 
-            LastChatMessages.Add(chatMessage);
-
-            if (ViewerController.ViewerExists(chatMessage.Username))
-            {
-                ViewerTracker.UpdateViewer(ViewerController.GetViewer(chatMessage.Username));
-            }
+            CommandLog.Add(command);
         }
 
-        public static void LogMessage(WhisperMessage whisperMessage)
+        public static void LogMessage(IMessage message)
         {
-            if (LastWhisperMessages.Count >= whisperMessageQueueLength - 1)
+            if (MessageLog.Count + 1 > LogLength)
             {
-                LastWhisperMessages.RemoveAt(0);
+                MessageLog.RemoveAt(0);
             }
 
-            LastWhisperMessages.Add(whisperMessage);
+            MessageLog.Add(message);
         }
     }
 }

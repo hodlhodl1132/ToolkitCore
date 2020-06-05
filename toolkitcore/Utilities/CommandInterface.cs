@@ -28,6 +28,17 @@ namespace ToolkitCore.Utilities
             {
                 toolkitChatCommand.TryExecute(command);
             }
+
+            if (ViewerController.ViewerExists(command.Service(), command.Username()))
+            {
+                ViewerController.GetViewer(command.Service(), command.Username()).UpdateViewerFromMessage(command);
+            }
+            else
+            {
+                ViewerController.CreateViewer(command.Service(), command.Username()).UpdateViewerFromMessage(command);
+            }
+
+            MessageLogger.LogCommand(command);
         }
     }
 }
