@@ -42,32 +42,19 @@ namespace ToolkitCore.Windows
             Widgets.Label(channelLabel, "Username:");
             ToolkitCoreSettings.mixerUsername = Widgets.TextField(channelField, ToolkitCoreSettings.mixerUsername);
 
-            listing.Gap(8f);
-            (Rect tokenLabel, Rect tokenField) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
-            Widgets.Label(tokenLabel, "OAuth Token:");
-
-            if (showAccessToken)
-            {
-                ToolkitCoreSettings.mixerAccessToken = Widgets.TextField(tokenField, ToolkitCoreSettings.mixerAccessToken);
-            }
-            else
-            {
-                Widgets.Label(tokenField, new string('*', Math.Min(ToolkitCoreSettings.mixerAccessToken.Length, 16)));
-            }
-
-            SettingsHelper.DrawShowButton(tokenField, ref showAccessToken);
-            
             (Rect _, Rect tknBtn) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
-            (Rect _, Rect pasteBtn) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
 
-            if (Widgets.ButtonText(tknBtn, "New OAuth Token"))
+            bool isRefreshing = !ToolkitCoreSettings.mixerRefreshToken.NullOrEmpty();
+            if (isRefreshing && Widgets.ButtonText(tknBtn, "Refresh OAuth Token"))
             {
-                Application.OpenURL("https://mixertokengenerator.com/?code=GwzpS4SGkHJLEzZS&state=frontend%7Cbmsxd25aWnphRWZRMTlFK09SdWl3dz09%7C23%2C25%2C34");
+                // TODO: Try to refresh the token. If it fails, it should take the user through the shortcode wizard.
             }
-
-            if (Widgets.ButtonText(pasteBtn, "Paste from Clipboard"))
+            else if (!isRefreshing && Widgets.ButtonText(tknBtn, "New OAuth Token"))
             {
-                ToolkitCoreSettings.mixerAccessToken = GUIUtility.systemCopyBuffer;
+                Dialog_MixerAuthWizard wizard = new Dialog_MixerAuthWizard();
+                
+                Find.WindowStack.TryRemove(wizard.GetType());
+                Find.WindowStack.Add(wizard);
             }
             
             listing.End();
