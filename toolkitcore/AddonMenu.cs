@@ -41,7 +41,7 @@ namespace ToolkitCore
             }),
             new FloatMenuOption("TestingMixer", delegate()
             {
-                ShortcodeTestWindow window = new ShortcodeTestWindow();
+                Dialog_MixerAuthWizard window = new Dialog_MixerAuthWizard();
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
             }),
