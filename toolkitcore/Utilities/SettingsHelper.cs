@@ -85,6 +85,13 @@ namespace ToolkitCore.Utilities
             }
         }
 
+        public static Rect ShiftLeft(this Rect region, float padding = 5f)
+        {
+            region.x -= region.width + padding;
+
+            return region;
+        }
+
         public static bool IsRegionVisible(this Rect region, Rect scrollView, Vector2 scrollPos)
         {
             return (region.y >= scrollPos.y || region.y + region.height - 1f >= scrollPos.y) && region.y <= scrollPos.y + scrollView.height;

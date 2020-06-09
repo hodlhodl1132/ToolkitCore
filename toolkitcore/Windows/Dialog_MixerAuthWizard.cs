@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
 using ToolkitCore.Models.Mixer.ShortcodeOAuth;
 using ToolkitCore.Utilities;
 using UnityEngine;
@@ -9,10 +10,9 @@ namespace ToolkitCore.Windows
     public class Dialog_MixerAuthWizard : Window
     {
         private string _currentCode = string.Empty;
-        private Pages _currentPage = Pages.Explanation;
+        private Pages _currentPage = Pages.ShortCode;
         private FlowSteps _currentStep = FlowSteps.Begin;
-        private int _currentTimer = -1;
-        private const int PollInterval = 8;  // Seconds
+        private int _globalTimer = -1;
 
         public Dialog_MixerAuthWizard()
         {
@@ -54,14 +54,17 @@ namespace ToolkitCore.Windows
 
             switch (page)
             {
-                case Pages.Explanation:
-                    title = "Mixer Token Wizard";
-                    break;
                 case Pages.ShortCode:
                     title = "Code Flow";
                     break;
                 case Pages.AuthCode:
                     title = "Verifying Code Status";
+                    break;
+                case Pages.Denied:
+                    title = "Access Denied";
+                    break;
+                case Pages.TimedOut:
+                    title = "Code Expired";
                     break;
                 default:
                     title = "Unknown Page";
@@ -73,95 +76,57 @@ namespace ToolkitCore.Windows
 
         private void DrawCurrentButtons(Rect inRect)
         {
-            Rect btnTemplateRect = new Rect(
+            Rect btnRect = new Rect(
                 inRect.width,
                 inRect.y,
                 Text.CalcSize($@"Copy ""{_currentCode}""").x + 16f,
                 Text.LineHeight
             );
-            btnTemplateRect.x -= btnTemplateRect.width;
+            btnRect = btnRect.ShiftLeft(0f);
 
-            if (Widgets.ButtonText(btnTemplateRect, _currentPage == Pages.AuthCode ? "Done" : "Cancel"))
+            switch (_currentPage)
             {
-                Close();
-            }
+                case Pages.TimedOut:
+                case Pages.Denied:
+                case Pages.AuthCode:
+                    if (Widgets.ButtonText(btnRect, "Done"))
+                    {
+                        Close();
+                    }
 
-            if (_currentPage == Pages.AuthCode)
-            {
-                if (_currentStep == FlowSteps.Done)
-                {
+                    if (_currentStep != FlowSteps.Done && _currentPage != Pages.AuthCode)
+                    {
+                        return;
+                    }
+
                     bool isConnected = MixerWrapper.Connected();
-                    
-                    btnTemplateRect.x -= btnTemplateRect.width + 5f;
-                    if (!isConnected && Widgets.ButtonText(btnTemplateRect, "Connect"))
+
+                    btnRect = btnRect.ShiftLeft();
+                    if (!isConnected && Widgets.ButtonText(btnRect, "Connect"))
                     {
                         MixerWrapper.InitializeClient();
                     }
                     else if (isConnected)
                     {
-                        SettingsHelper.DrawLabelAnchored(btnTemplateRect, TCText.ColoredText("Connected", Color.green), TextAnchor.MiddleRight);
-                    }
-                }
-                
-                if (_currentStep == FlowSteps.Done || _currentStep == FlowSteps.CodeExchange)
-                {
-                    return;
-                }
-
-                btnTemplateRect.x -= btnTemplateRect.width + 5f;
-                if (Widgets.ButtonText(btnTemplateRect, $@"Copy ""{_currentCode}"""))
-                {
-                    GUIUtility.systemCopyBuffer = _currentCode;
-                }
-
-                return;
-            }
-
-            if (Widgets.ButtonText(btnTemplateRect, "Cancel"))
-            {
-                Close();
-            }
-
-            btnTemplateRect.x -= btnTemplateRect.width + 5f;
-            if (Widgets.ButtonText(btnTemplateRect, "Next"))
-            {
-                GoToNextPage();
-            }
-
-            if (_currentCode.NullOrEmpty())
-            {
-                return;
-            }
-
-            btnTemplateRect.x -= btnTemplateRect.width + 5f;
-            if (Widgets.ButtonText(btnTemplateRect, $@"Copy ""{_currentCode}"""))
-            {
-                GUIUtility.systemCopyBuffer = _currentCode;
-            }
-        }
-
-        private void GoToNextPage()
-        {
-            switch (_currentPage)
-            {
-                case Pages.Explanation:
-                    if (_currentCode.NullOrEmpty())
-                    {
-                        Task _ = GetShortCode();
+                        SettingsHelper.DrawLabelAnchored(
+                            btnRect,
+                            TCText.ColoredText("Connected", Color.green),
+                            TextAnchor.MiddleRight
+                        );
                     }
 
-                    _currentPage = Pages.ShortCode;
-                    _currentStep = FlowSteps.WaitingOnUser;
                     break;
                 case Pages.ShortCode:
-                    if (!_currentCode.NullOrEmpty())
+                    if (Widgets.ButtonText(btnRect, $@"Copy ""{_currentCode}"""))
                     {
-                        Task _ = CheckShortcode();
+                        GUIUtility.systemCopyBuffer = _currentCode;
                     }
 
-                    _currentPage = Pages.AuthCode;
-                    break;
-                case Pages.AuthCode:
+                    if (Widgets.ButtonText(btnRect.ShiftLeft(), "Open Browser"))
+                    {
+                        Application.OpenURL($"https://mixer.com/go?code={_currentCode}");
+                    }
+
                     break;
             }
         }
@@ -181,33 +146,57 @@ namespace ToolkitCore.Windows
             _currentStep = FlowSteps.CodeGenerated;
             _currentCode = ShortcodeUtilities.OAuthShortcodeResponse.code;
             _currentStep = FlowSteps.HasCode;
-
-            Application.OpenURL($"https://mixer.com/go?code={_currentCode}");
         }
 
-        private async Task CheckShortcode()
+        private async Task CheckShortcodeLoop()
         {
-            _currentStep = FlowSteps.HasCode;
-            bool task = await ShortcodeUtilities.CheckShortcode();
-
-            if (!task)
+            while (_globalTimer > 0)
             {
-                Log.Error("Couldn't obtain shortcode! Was it submitted?");
+                int delay = Mathf.Min(13, _globalTimer);
+                await Task.Delay(delay * 1000);
+                _globalTimer -= delay;
 
-                _currentTimer = PollInterval;
-
-                while (_currentTimer > 0)
+                try
                 {
-                    await Task.Delay(1000);
-                    _currentTimer -= 1;
-                }
-                
-                Task _ = CheckShortcode();
-                return;
-            }
+                    bool success = await ShortcodeUtilities.CheckShortcode();
 
-            _currentStep = FlowSteps.AccessGranted;
-            Task __ = GetOAuthToken();
+                    if (success)
+                    {
+                        _currentStep = FlowSteps.AccessGranted;
+                        _currentPage = Pages.AuthCode;
+                        _globalTimer = 0;
+                        await GetOAuthToken();
+                    }
+                }
+                catch (WebException e)
+                {
+                    if (!(e.Response is HttpWebResponse response))
+                    {
+                        Log.Error("Response received wasn't a http response!");
+                        return;
+                    }
+
+                    switch (response.StatusCode)
+                    {
+                        case HttpStatusCode.NoContent:
+                        case HttpStatusCode.Forbidden:
+                            _currentPage = Pages.Denied;
+                            _currentStep = FlowSteps.AccessDenied;
+                            _globalTimer = -1;
+                            break;
+                        case HttpStatusCode.NotFound:
+                            _currentPage = Pages.TimedOut;
+                            _currentStep = FlowSteps.CodeExpired;
+                            _globalTimer = -1;
+                            break;
+                        default:
+                            _currentPage = Pages.Denied;
+                            _currentStep = FlowSteps.AccessDenied;
+                            _globalTimer = -1;
+                            break;
+                    }
+                }
+            }
         }
 
         private async Task GetOAuthToken()
@@ -226,29 +215,53 @@ namespace ToolkitCore.Windows
             _currentStep = FlowSteps.Done;
         }
 
+        public override void PreOpen()
+        {
+            base.PreOpen();
+
+            if (_currentCode.NullOrEmpty())
+            {
+                Task shortCode = GetShortCode();
+                Task postShortcode = shortCode.ContinueWith(
+                    t =>
+                    {
+                        if (!t.IsCompletedSuccessfully)
+                        {
+                            return;
+                        }
+
+                        _currentPage = Pages.ShortCode;
+                        _currentStep = FlowSteps.WaitingOnUser;
+                        _globalTimer = ShortcodeUtilities.OAuthShortcodeResponse.expires_in;
+                    }
+                );
+
+                postShortcode.ContinueWith(async t => await CheckShortcodeLoop());
+            }
+            else
+            {
+                _currentPage = Pages.ShortCode;
+                _currentStep = FlowSteps.WaitingOnUser;
+            }
+        }
+
         private void DrawCurrentPage(Rect inRect)
         {
             switch (_currentPage)
             {
-                case Pages.Explanation:
-                    Widgets.Label(
-                        inRect,
-                        @"In the next page you'll be prompted with a code. Your browser will automatically open to a page on Mixer's site you'll need to enter this code. Once you're done there, you'll need to click the ""Next"" button so the mod can continue the authentication sequence."
-                    );
-                    return;
                 case Pages.ShortCode:
-                    Widgets.Label(inRect, $@"Enter <b>{_currentCode}</b> at mixer.com/go");
+                    Widgets.Label(
+                        inRect.TopHalf(),
+                        @"Welcome to the Mixer auth wizard! To connect ToolkitCore to Mixer, you'll first have to click the ""Open Browser"" button. Once the web page loads, you'll then have to click ""Approve"". This window will update once you're done."
+                    );
+                    Widgets.Label(
+                        inRect.BottomHalf(),
+                        $@"If button does not work for you, you can go to <b>https://mixer.com/go</b>, then enter the code <b>{_currentCode}</b>."
+                    );
                     return;
                 case Pages.AuthCode:
                     switch (_currentStep)
                     {
-                        case FlowSteps.HasCode:
-                        case FlowSteps.WaitingOnUser:
-                            Widgets.Label(
-                                inRect,
-                                $@"You must enter the code ""{_currentCode}"" at mixer.com/go before you can continue. Checking again in {_currentTimer:N0} seconds..."
-                            );
-                            break;
                         case FlowSteps.AccessGranted:
                         case FlowSteps.CodeExchange:
                             Widgets.Label(inRect, "Getting token...");
@@ -259,18 +272,35 @@ namespace ToolkitCore.Windows
                     }
 
                     return;
+                case Pages.TimedOut:
+                    Widgets.Label(
+                        inRect,
+                        "The code has expired. You'll have to restart this process in order to connect to Mixer."
+                    );
+                    break;
+                case Pages.Denied:
+                    Widgets.Label(
+                        inRect,
+                        "ToolkitCore was denied access to your Mixer account. ToolkitCore won't be able to connect to Mixer without approval."
+                    );
+                    break;
                 default:
                     return;
             }
         }
 
-        private enum Pages { Explanation, ShortCode, AuthCode }
+        private enum Pages
+        {
+            ShortCode, AuthCode, Denied,
+            TimedOut
+        }
 
         private enum FlowSteps
         {
             Begin, GeneratingCode, CodeGenerated,
             HasCode, WaitingOnUser, AccessGranted,
-            CodeExchange, Done
+            CodeExchange, Done, AccessDenied,
+            CodeExpired
         }
     }
 }
