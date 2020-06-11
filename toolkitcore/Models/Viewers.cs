@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,7 +47,10 @@ namespace ToolkitCore.Models
     {
         public Viewer()
         {
-            ViewerList.Instance.All.Add(this);
+            if (ViewerList.Instance != null)
+            {
+                ViewerList.Instance.All.Add(this);
+            }
         }
 
         public Service Service { get; set; }
