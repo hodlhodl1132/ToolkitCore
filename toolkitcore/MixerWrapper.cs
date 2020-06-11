@@ -1,12 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 using ToolkitCore.Models.Mixer;
+using ToolkitCore.Models.Mixer.ShortcodeOAuth;
 using ToolkitCore.Utilities;
 using Verse;
 
@@ -52,11 +54,54 @@ namespace ToolkitCore
 
             if (AuthKeyResponse.authkey == null || AuthKeyResponse.authkey == string.Empty)
             {
-                Log.Error("AuthKey is null, cannot continue");
-                return;
+                Log.Warning("Authkey is null");
+
+                if (ToolkitCoreSettings.mixerRefreshToken != null && ToolkitCoreSettings.mixerRefreshToken != string.Empty)
+                {
+                    Log.Message("Attempting to refresh access token");
+                    bool task = await RefreshAccessToken();
+
+                    if (!task)
+                    {
+                        return;
+                    }
+                    
+                }
+                else
+                {
+                    Log.Error("AuthKey is null, and refresh token is null cannot continue");
+                    return;
+                }
             }
 
             StartWebSocket();
+        }
+
+        static async Task<bool> RefreshAccessToken()
+        {
+            OAuthTokenRequest request = new OAuthTokenRequest(true);
+
+            string requestJson = JsonConvert.SerializeObject(request);
+
+            Log.Message(requestJson);
+
+            string reseponseJson = await WebClient.UploadStringTaskAsync(new Uri($"{MixerApiBaseUrl}oauth/token"), requestJson);
+
+            Log.Message(reseponseJson);
+
+            OAuthTokenResponse response = JsonConvert.DeserializeObject<OAuthTokenResponse>(reseponseJson);
+
+            if (response.access_token != null)
+            {
+                ToolkitCoreSettings.mixerAccessToken = response.access_token;
+                ToolkitCoreSettings.mixerRefreshToken = response.refresh_token;
+                return true;
+            }
+            else
+            {
+                Log.Error("Authkey is null and could not refresh access token with refresh token");
+                return false;
+            }
         }
 
         static async Task GetChannelId()

@@ -19,15 +19,22 @@ namespace ToolkitCore.Models.Mixer.ShortcodeOAuth
 
         public static async Task<bool> GetShortcode()
         {
-            WebClient webClient = new WebClient();
-            OAuthShortcodeRequest request = new OAuthShortcodeRequest();
-            string jsonRequest = JsonConvert.SerializeObject(request);
-            string jsonResponse = await webClient.UploadStringTaskAsync($"{MixerWrapper.MixerApiBaseUrl}oauth/shortcode", jsonRequest);
-            OAuthShortcodeResponse response = JsonConvert.DeserializeObject<OAuthShortcodeResponse>(jsonResponse);
-            if (response.code != null)
+            try
             {
-                OAuthShortcodeResponse = response;
-                return true;
+                WebClient webClient = new WebClient();
+                OAuthShortcodeRequest request = new OAuthShortcodeRequest();
+                string jsonRequest = JsonConvert.SerializeObject(request);
+                string jsonResponse = await webClient.UploadStringTaskAsync($"{MixerWrapper.MixerApiBaseUrl}oauth/shortcode", jsonRequest);
+                OAuthShortcodeResponse response = JsonConvert.DeserializeObject<OAuthShortcodeResponse>(jsonResponse);
+                if (response.code != null)
+                {
+                    OAuthShortcodeResponse = response;
+                    return true;
+                }
+            }
+            catch (WebException e)
+            {
+                Log.Error($"Error getting shortcode. {e.Message}");
             }
 
             return false;
@@ -35,20 +42,28 @@ namespace ToolkitCore.Models.Mixer.ShortcodeOAuth
 
         public static async Task<bool> CheckShortcode()
         {
-            WebClient webClient = new WebClient();
-            string jsonResponse = await webClient.DownloadStringTaskAsync($"{MixerWrapper.MixerApiBaseUrl}oauth/shortcode/check/{OAuthShortcodeResponse.handle}");
+            Log.Message("Verifying oauth Shortcode");
 
-            if (jsonResponse == string.Empty)
+            try
             {
-                return false;
+                WebClient webClient = new WebClient();
+                string jsonResponse = await webClient.DownloadStringTaskAsync($"{MixerWrapper.MixerApiBaseUrl}oauth/shortcode/check/{OAuthShortcodeResponse.handle}");
+
+                if (jsonResponse == string.Empty)
+                {
+                    return false;
+                }
+
+                OAuthShortcodeCheckResponse response = JsonConvert.DeserializeObject<OAuthShortcodeCheckResponse>(jsonResponse);
+                if (response.code != null)
+                {
+                    OAuthShortcodeCheckResponse = response;
+                    return true;
+                }
             }
-
-            OAuthShortcodeCheckResponse response = JsonConvert.DeserializeObject<OAuthShortcodeCheckResponse>(jsonResponse);
-            if (response.code != null)
+            catch (WebException e)
             {
-                Log.Message(response.code);
-                OAuthShortcodeCheckResponse = response;
-                return true;
+                Log.Error($"Error checking shortcode. {e.Message}");
             }
 
             return false;
@@ -56,18 +71,23 @@ namespace ToolkitCore.Models.Mixer.ShortcodeOAuth
 
         public static async Task<bool> GetOAuthToken()
         {
-            WebClient webClient = new WebClient();
-            OAuthTokenRequest request = new OAuthTokenRequest(OAuthShortcodeCheckResponse.code);
-            string jsonRequest = JsonConvert.SerializeObject(request);
-            string jsonResponse = await webClient.UploadStringTaskAsync($"{MixerWrapper.MixerApiBaseUrl}oauth/token", jsonRequest);
-            OAuthTokenResponse response = JsonConvert.DeserializeObject<OAuthTokenResponse>(jsonResponse);
-            if (response.access_token != null && response.refresh_token != null)
+            try
             {
-                OAuthTokenResponse = response;
-                return true;
+                WebClient webClient = new WebClient();
+                OAuthTokenRequest request = new OAuthTokenRequest(false, OAuthShortcodeCheckResponse.code);
+                string jsonRequest = JsonConvert.SerializeObject(request, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                string jsonResponse = await webClient.UploadStringTaskAsync($"{MixerWrapper.MixerApiBaseUrl}oauth/token", jsonRequest);
+                OAuthTokenResponse response = JsonConvert.DeserializeObject<OAuthTokenResponse>(jsonResponse);
+                if (response.access_token != null && response.refresh_token != null)
+                {
+                    OAuthTokenResponse = response;
+                    return true;
+                }                
             }
-
-            Log.Error("Error retrieving OAuth Token");
+            catch (WebException e)
+            {
+                Log.Error($"Error retrieving OAuth Token. {e.Message}");
+            }
 
             return false;
         }

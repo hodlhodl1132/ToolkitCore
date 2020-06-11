@@ -84,7 +84,5 @@ namespace ToolkitCore.Windows
             
             listing.End();
         }
-
-        private static bool showAccessToken;
     }
 }

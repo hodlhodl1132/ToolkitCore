@@ -9,10 +9,19 @@ namespace ToolkitCore.Models.Mixer.ShortcodeOAuth
     [Serializable]
     public class OAuthTokenRequest
     {
-        public OAuthTokenRequest(string code)
+        public OAuthTokenRequest(bool refresh = false, string code = "")
         {
             client_id = ToolkitCoreSettings.mixerClientID;
-            grant_type = "authorization_code";
+            if (!refresh)
+            {
+                grant_type = "authorization_code";
+            }
+            else
+            {
+                grant_type = "refresh_token";
+                refresh_token = ToolkitCoreSettings.mixerRefreshToken;
+            }
+                
             this.code = code;
         }
 
@@ -21,5 +30,7 @@ namespace ToolkitCore.Models.Mixer.ShortcodeOAuth
         public string code { get; set; }
 
         public string grant_type { get; set; }
+
+        public string refresh_token { get; set; }
     }
 }
