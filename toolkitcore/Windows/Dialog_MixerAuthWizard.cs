@@ -24,6 +24,8 @@ namespace ToolkitCore.Windows
 
         public override void DoWindowContents(Rect inRect)
         {
+            GameFont original = Text.Font;
+            Text.Font = GameFont.Small;
             Rect titleRect = new Rect(0f, 0f, inRect.width, Text.LineHeight * 2);
             Rect buttonRect = new Rect(0f, inRect.height - Text.LineHeight, inRect.width, Text.LineHeight);
             Rect contentRect = new Rect(
@@ -46,6 +48,7 @@ namespace ToolkitCore.Windows
             GUI.BeginGroup(contentRect);
             DrawCurrentPage(contentInnerRect);
             GUI.EndGroup();
+            Text.Font = original;
         }
 
         private static void DrawTitleFor(Rect inRect, Pages page)
