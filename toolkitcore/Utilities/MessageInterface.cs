@@ -26,7 +26,7 @@ namespace ToolkitCore.Utilities
             }
             else
             {
-                ViewerController.CreateViewer(message.Service(), message.Username()).UpdateViewerFromMessage(message);
+                ViewerController.CreateViewer(message.Service(), message.Username(), message.UserId()).UpdateViewerFromMessage(message);
             }
 
             MessageLogger.LogMessage(message);

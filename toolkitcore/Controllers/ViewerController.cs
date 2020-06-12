@@ -27,12 +27,13 @@ namespace ToolkitCore.Controllers
             return GetViewer(service, username) != null;
         }
 
-        public static Viewer CreateViewer(Service service, string username)
+        public static Viewer CreateViewer(Service service, string username, int userId)
         {
             return new Viewer()
             {
                 Service = service,
-                Username = username
+                Username = username,
+                UserId = userId
             };
         }
     }

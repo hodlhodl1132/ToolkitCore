@@ -18,7 +18,7 @@ namespace ToolkitCore.Models
     {
         static ViewerManager()
         {
-            if (DatabaseController.LoadObject<ViewerList>("Viewers", LoadedModManager.GetMod<ToolkitCore>(), out ViewerList viewers))
+            if (DatabaseController.LoadObject("Viewers", LoadedModManager.GetMod<ToolkitCore>(), out ViewerList viewers))
             {
                 ViewerList.Instance = viewers;
             }
@@ -58,6 +58,8 @@ namespace ToolkitCore.Models
         public string Username { get; set; }
 
         public long LastSeenAt { get; set; }
+
+        public int UserId { get; set; }
 
         public void UpdateLastSeenAt()
         {

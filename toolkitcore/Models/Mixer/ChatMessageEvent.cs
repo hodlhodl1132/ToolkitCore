@@ -26,6 +26,11 @@ namespace ToolkitCore.Models.Mixer
             return data.user_name;
         }
 
+        public int UserId()
+        {
+            return data.user_id;
+        }
+
         public bool Whisper()
         {
             return false;
@@ -50,6 +55,8 @@ namespace ToolkitCore.Models.Mixer
         public string id { get; set; }
 
         public string user_name { get; set; }
+
+        public int user_id { get; set; }
 
         public List<string> user_roles { get; set; }
 

@@ -15,6 +15,8 @@ namespace ToolkitCore.Interfaces
 
         Service Service();
 
+        int UserId();
+
         bool Whisper();
 
         bool IsBroadcaster();
