@@ -165,7 +165,6 @@ namespace ToolkitCore
             Scribe_Values.Look(ref twitchOauthToken, "twitchOauthToken", "");
             Scribe_Values.Look(ref twitchConnectOnStartup, "twitchConnectOnStartup", false);
 
-
             // Mixer
             Scribe_Values.Look(ref mixerAccessToken, "mixerAccessToken");
             Scribe_Values.Look(ref mixerRefreshToken, "mixerRefreshToken");

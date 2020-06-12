@@ -38,7 +38,7 @@ namespace ToolkitCore.Utilities
                 ViewerController.CreateViewer(command.Service(), command.Username(), command.UserId()).UpdateViewerFromMessage(command);
             }
 
-            MessageLogger.LogCommand(command);
+            MessageLogger.LogMessage(command);
         }
     }
 }
