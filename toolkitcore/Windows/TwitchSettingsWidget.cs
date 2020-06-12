@@ -40,7 +40,7 @@ namespace ToolkitCore.Windows
             
             (Rect channelLabel, Rect channelField) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
             Widgets.Label(channelLabel, "Channel:");
-            ToolkitCoreSettings.channel_username = Widgets.TextField(channelField, ToolkitCoreSettings.channel_username);
+            ToolkitCoreSettings.twitchChannelUsername = Widgets.TextField(channelField, ToolkitCoreSettings.twitchChannelUsername);
 
             (Rect _, Rect copyBtn) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
 
@@ -50,12 +50,12 @@ namespace ToolkitCore.Windows
             
             if (Widgets.ButtonInvisible(copyBtn))
             {
-                ToolkitCoreSettings.bot_username = ToolkitCoreSettings.channel_username;
+                ToolkitCoreSettings.twitchBotUsername = ToolkitCoreSettings.twitchChannelUsername;
             }
 
             (Rect botLabel, Rect botField) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
             Widgets.Label(botLabel, "Bot Username:");
-            ToolkitCoreSettings.bot_username = Widgets.TextField(botField, ToolkitCoreSettings.bot_username);
+            ToolkitCoreSettings.twitchBotUsername = Widgets.TextField(botField, ToolkitCoreSettings.twitchBotUsername);
 
             listing.Gap(8f);
             (Rect tokenLabel, Rect tokenField) = listing.GetRect(Text.LineHeight).ToForm(0.7f);
@@ -63,11 +63,11 @@ namespace ToolkitCore.Windows
 
             if (showToken)
             {
-                ToolkitCoreSettings.oauth_token = Widgets.TextField(tokenField, ToolkitCoreSettings.oauth_token);
+                ToolkitCoreSettings.twitchOauthToken = Widgets.TextField(tokenField, ToolkitCoreSettings.twitchOauthToken);
             }
             else
             {
-                Widgets.Label(tokenField, new string('*', Math.Min(ToolkitCoreSettings.oauth_token.Length, 16)));
+                Widgets.Label(tokenField, new string('*', Math.Min(ToolkitCoreSettings.twitchOauthToken.Length, 16)));
             }
 
             SettingsHelper.DrawShowButton(tokenField, ref showToken);
@@ -83,7 +83,7 @@ namespace ToolkitCore.Windows
 
             if (Widgets.ButtonText(pasteBtn, "Paste from Clipboard"))
             {
-                ToolkitCoreSettings.oauth_token = GUIUtility.systemCopyBuffer;
+                ToolkitCoreSettings.twitchOauthToken = GUIUtility.systemCopyBuffer;
             }
 
             listing.End();
@@ -114,7 +114,7 @@ namespace ToolkitCore.Windows
             
             (Rect autoLabel, Rect autoField) = listing.GetRect(Text.LineHeight).ToForm(0.85f);
             Widgets.Label(autoLabel, "Auto connect on startup?");
-            Widgets.Checkbox(autoField.x + autoField.width - 24f, autoField.y, ref ToolkitCoreSettings.connectOnGameStartup);
+            Widgets.Checkbox(autoField.x + autoField.width - 24f, autoField.y, ref ToolkitCoreSettings.twitchConnectOnStartup);
             
             listing.End();
         }

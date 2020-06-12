@@ -7,15 +7,15 @@ namespace ToolkitCore
 {
     public class ToolkitCoreSettings : ModSettings
     {
-        public static string channel_username = "";
-        public static string bot_username = "";
-        public static string oauth_token = "";
-
-        public static bool connectOnGameStartup = false;
         public static bool allowWhispers = true;
         public static bool forceWhispers = false;
-
         public static bool sendMessageToChatOnStartup = true;
+
+        // Twitch
+        public static string twitchChannelUsername = "";
+        public static string twitchBotUsername = "";
+        public static string twitchOauthToken = "";
+        public static bool twitchConnectOnStartup = false;
 
         // Mixer
         public static string mixerAccessToken = "";
@@ -51,19 +51,19 @@ namespace ToolkitCore
 
             Rect input = new Rect(200f, sectionVertical, 200f, verticalHeight);
 
-            channel_username = Widgets.TextField(input, channel_username);
+            twitchChannelUsername = Widgets.TextField(input, twitchChannelUsername);
 
             input.y += verticalSpacing;
 
-            bot_username = Widgets.TextField(input, bot_username);
+            twitchBotUsername = Widgets.TextField(input, twitchBotUsername);
 
-            if (channel_username != "")
+            if (twitchChannelUsername != "")
             {
                 Rect copyUsername = new Rect(input.x + input.width + 10f, input.y, 210f, verticalHeight);
 
                 if (Widgets.ButtonText(copyUsername, "Same as Channel"))
                 {
-                    bot_username = channel_username;
+                    twitchBotUsername = twitchChannelUsername;
                 }
             }
 
@@ -73,13 +73,13 @@ namespace ToolkitCore
 
             if (showOauth)
             {
-                oauth_token = Widgets.TextField(input, oauth_token);
+                twitchOauthToken = Widgets.TextField(input, twitchOauthToken);
 
                 if (Widgets.ButtonText(oauthToggle, "Hide")) showOauth = !showOauth;
             }
             else
             {
-                Widgets.Label(input, new string('*', Math.Min(oauth_token.Length, 16)));
+                Widgets.Label(input, new string('*', Math.Min(twitchOauthToken.Length, 16)));
 
                 if (Widgets.ButtonText(oauthToggle, "Show")) showOauth = !showOauth;
             }
@@ -90,7 +90,7 @@ namespace ToolkitCore
 
             input.y += verticalSpacing;
 
-            if (Widgets.ButtonText(input, "Paste from Clipboard")) oauth_token = GUIUtility.systemCopyBuffer;
+            if (Widgets.ButtonText(input, "Paste from Clipboard")) twitchOauthToken = GUIUtility.systemCopyBuffer;
 
             // Connection
 
@@ -125,7 +125,7 @@ namespace ToolkitCore
 
             input.y = label.y;
 
-            Widgets.Checkbox(input.position, ref connectOnGameStartup);
+            Widgets.Checkbox(input.position, ref twitchConnectOnStartup);
 
             label.y += verticalSpacing;
 
@@ -154,13 +154,18 @@ namespace ToolkitCore
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref channel_username, "channel_username", "");
-            Scribe_Values.Look(ref bot_username, "bot_username", "");
-            Scribe_Values.Look(ref oauth_token, "oauth_token", "");
-            Scribe_Values.Look(ref connectOnGameStartup, "connectOnGameStartup", false);
             Scribe_Values.Look(ref allowWhispers, "allowWhispers", true);
             Scribe_Values.Look(ref sendMessageToChatOnStartup, "sendMessageToChatOnStartup", true);
             Scribe_Values.Look(ref forceWhispers, "forceWhispers", false);
+
+            //Global
+            Scribe_Values.Look(ref twitchChannelUsername, "twitchChannelUsername", "");
+            Scribe_Values.Look(ref twitchBotUsername, "twitchBotUsername", "");
+            Scribe_Values.Look(ref twitchOauthToken, "twitchOauthToken", "");
+            Scribe_Values.Look(ref twitchConnectOnStartup, "twitchConnectOnStartup", false);
+
+            //Twitch
+
 
             //Mixer
             Scribe_Values.Look(ref mixerAccessToken, "mixerAccessToken");

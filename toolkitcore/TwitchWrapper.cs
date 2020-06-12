@@ -17,7 +17,7 @@ namespace ToolkitCore
 
         public static void StartAsync()
         {
-            Initialize(new ConnectionCredentials(ToolkitCoreSettings.bot_username, ToolkitCoreSettings.oauth_token));
+            Initialize(new ConnectionCredentials(ToolkitCoreSettings.twitchBotUsername, ToolkitCoreSettings.twitchOauthToken));
         }
 
         public static void Initialize(ConnectionCredentials credentials)
@@ -61,7 +61,7 @@ namespace ToolkitCore
             }
 
             // Initialize the client with the credentials instance, and setting a default channel to connect to.
-            Client.Initialize(credentials, ToolkitCoreSettings.channel_username);
+            Client.Initialize(credentials, ToolkitCoreSettings.twitchChannelUsername);
 
             // Bind Channel Connection
             Client.OnConnected += OnConnected;
@@ -270,7 +270,7 @@ namespace ToolkitCore
 
         public static void SendChatMessage(string message)
         {
-            Client.SendMessage(Client.GetJoinedChannel(ToolkitCoreSettings.channel_username), message);
+            Client.SendMessage(Client.GetJoinedChannel(ToolkitCoreSettings.twitchChannelUsername), message);
         }
     }
 }
