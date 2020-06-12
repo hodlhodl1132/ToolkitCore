@@ -154,20 +154,19 @@ namespace ToolkitCore
 
         public override void ExposeData()
         {
+            // Global
             Scribe_Values.Look(ref allowWhispers, "allowWhispers", true);
             Scribe_Values.Look(ref sendMessageToChatOnStartup, "sendMessageToChatOnStartup", true);
             Scribe_Values.Look(ref forceWhispers, "forceWhispers", false);
 
-            //Global
+            // Twitch
             Scribe_Values.Look(ref twitchChannelUsername, "twitchChannelUsername", "");
             Scribe_Values.Look(ref twitchBotUsername, "twitchBotUsername", "");
             Scribe_Values.Look(ref twitchOauthToken, "twitchOauthToken", "");
             Scribe_Values.Look(ref twitchConnectOnStartup, "twitchConnectOnStartup", false);
 
-            //Twitch
 
-
-            //Mixer
+            // Mixer
             Scribe_Values.Look(ref mixerAccessToken, "mixerAccessToken");
             Scribe_Values.Look(ref mixerRefreshToken, "mixerRefreshToken");
             Scribe_Values.Look(ref mixerUsername, "mixerUsername");
