@@ -21,6 +21,7 @@ namespace ToolkitCore
         public static string mixerAccessToken = "";
         public static string mixerRefreshToken = "";
         public static string mixerUsername = "";
+        public static bool mixerConnectOnStartup = false;
 
         internal static string mixerClientID = "405b869d155f40d8bde397cd1d25695206b3633b9e1bb4fa";
 
@@ -165,6 +166,7 @@ namespace ToolkitCore
             Scribe_Values.Look(ref mixerAccessToken, "mixerAccessToken");
             Scribe_Values.Look(ref mixerRefreshToken, "mixerRefreshToken");
             Scribe_Values.Look(ref mixerUsername, "mixerUsername");
+            Scribe_Values.Look(ref mixerConnectOnStartup, "mixerAutoConnect", false);
         }
 
         bool showOauth = false;
