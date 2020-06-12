@@ -47,6 +47,6 @@ namespace ToolkitCore.Windows
             Text.Font = original;
         }
 
-        public override Vector2 InitialSize => new Vector2(1024, UI.screenHeight - 100f);
+        public override Vector2 InitialSize => new Vector2(600, UI.screenHeight - 100f);
     }
 }
