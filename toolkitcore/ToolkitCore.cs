@@ -46,6 +46,11 @@ namespace ToolkitCore
             {
                 TwitchWrapper.StartAsync();
             }
+
+            if (ToolkitCoreSettings.mixerConnectOnStartup)
+            {
+                MixerWrapper.InitializeClient();
+            }
         }
     }
 }

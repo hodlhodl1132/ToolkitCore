@@ -87,6 +87,10 @@ namespace ToolkitCore.Windows
                     MixerWrapper.InitializeClient();
                 }
             }
+
+            (Rect autoLabel, Rect autoField) = listing.GetRect(Text.LineHeight).ToForm(0.85f);
+            Widgets.Label(autoLabel, "Auto connect on startup?");
+            Widgets.Checkbox(autoField.x + autoField.width - 24f, autoField.y, ref ToolkitCoreSettings.mixerConnectOnStartup);
             
             listing.End();
         }
