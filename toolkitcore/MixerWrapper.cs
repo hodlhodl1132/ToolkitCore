@@ -19,9 +19,9 @@ namespace ToolkitCore
     {
         internal static readonly string MixerApiBaseUrl = "https://mixer.com/api/v1/";
 
-        public static int ChannelId { get; set; }
+        public static int ChannelId { get; set; } = 0;
 
-        public static int UserId { get; set; }
+        public static int UserId { get; set; } = 0;
 
         static AuthKeyResponse AuthKeyResponse { get; set; }
 
@@ -45,12 +45,32 @@ namespace ToolkitCore
             return WebSocket.IsConnected;
         }
 
+        public static void Disconnect()
+        {
+            if (WebSocket != null)
+            {
+                WebSocket.Close();
+            }
+        }
+
         public static async void InitializeClient()
         {
             WebClient.Headers.Set("authorization", "Bearer " + ToolkitCoreSettings.mixerAccessToken);
 
-            await GetChannelId();
-            await GetAuthKey();
+            if (Connected())
+            {
+                WebSocket.Close();
+            }
+
+            if (ChannelId == 0 || UserId == 0)
+            {
+                await GetChannelId();
+            }
+            
+            if (AuthKeyResponse == null)
+            {
+                await GetAuthKey();
+            }
 
             if (AuthKeyResponse.authkey == null || AuthKeyResponse.authkey == string.Empty)
             {
@@ -83,11 +103,7 @@ namespace ToolkitCore
 
             string requestJson = JsonConvert.SerializeObject(request);
 
-            Log.Message(requestJson);
-
             string reseponseJson = await WebClient.UploadStringTaskAsync(new Uri($"{MixerApiBaseUrl}oauth/token"), requestJson);
-
-            Log.Message(reseponseJson);
 
             OAuthTokenResponse response = JsonConvert.DeserializeObject<OAuthTokenResponse>(reseponseJson);
 

@@ -172,7 +172,7 @@ namespace ToolkitCore.Models.Mixer
                    }
                    catch (Exception e)
                    {
-                       Log.Error(e.Message);
+                       Log.Warning(e.Message);
                    }
                }
            });

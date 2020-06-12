@@ -73,13 +73,19 @@ namespace ToolkitCore.Windows
 
             (Rect _, Rect connBtn) = listing.GetRect(Text.LineHeight).ToForm();
 
-            if (MixerWrapper.Connected() && Widgets.ButtonText(connBtn, "Reconnect"))
+            if (MixerWrapper.Connected())
             {
-                
+                if (Widgets.ButtonText(connBtn, "Disconnect"))
+                {
+                    MixerWrapper.Disconnect();
+                }
             }
-            else if (Widgets.ButtonText(connBtn, "Connect"))
+            else
             {
-                MixerWrapper.InitializeClient();
+                if (Widgets.ButtonText(connBtn, "Connect"))
+                {
+                    MixerWrapper.InitializeClient();
+                }
             }
             
             listing.End();
