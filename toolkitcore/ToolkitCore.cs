@@ -18,13 +18,6 @@ namespace ToolkitCore
         {
             settings = GetSettings<ToolkitCoreSettings>();
         }
-
-        public override string SettingsCategory() => "ToolkitCore";
-
-        public override void DoSettingsWindowContents(Rect inRect)
-        {
-            settings.DoWindowContents(inRect);
-        }
     }
 
     public class ToolkitData : Mod
