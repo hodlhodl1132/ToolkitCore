@@ -20,16 +20,6 @@ namespace ToolkitCore
         }
     }
 
-    public class ToolkitData : Mod
-    {
-        public static GlobalDatabase globalDatabase;
-
-        public ToolkitData(ModContentPack content) : base(content)
-        {
-            globalDatabase = GetSettings<GlobalDatabase>();
-        }
-    }
-
     [StaticConstructorOnStartup]
     public static class Startup
     {
