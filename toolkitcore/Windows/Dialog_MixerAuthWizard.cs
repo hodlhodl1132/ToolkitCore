@@ -255,7 +255,7 @@ namespace ToolkitCore.Windows
                 case Pages.ShortCode:
                     Widgets.Label(
                         inRect.TopHalf(),
-                        @"Welcome to the Mixer auth wizard! To connect ToolkitCore to Mixer, you'll first have to click the ""Open Browser"" button. Once the web page loads, you'll then have to click ""Approve"". This window will update once you're done."
+                        @"Welcome to the Mixer auth wizard! To connect ToolkitCore to Mixer, you'll first have to click the ""Open Browser"" button. Once the web page loads, you'll then have to click ""Approve"". <b>This window will update once you're done.</b>"
                     );
                     Widgets.Label(
                         inRect.BottomHalf(),

@@ -63,7 +63,7 @@ namespace ToolkitCore.Models.Mixer.ShortcodeOAuth
             }
             catch (WebException e)
             {
-                Log.Error($"Error checking shortcode. {e.Message}");
+                Log.Message($"Failed checking shortcode. {e.Message}");
             }
 
             return false;
