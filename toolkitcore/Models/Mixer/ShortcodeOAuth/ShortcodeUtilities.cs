@@ -1,4 +1,4 @@
-﻿﻿using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace ToolkitCore.Models.Mixer.ShortcodeOAuth
             return false;
         }
 
-        public static async Task<HttpStatusCode> CheckShortcode()
+        public static async Task<bool> CheckShortcode()
         {
             Log.Message("Verifying oauth Shortcode");
 
@@ -51,23 +51,22 @@ namespace ToolkitCore.Models.Mixer.ShortcodeOAuth
 
                 if (jsonResponse == string.Empty)
                 {
-                    return HttpStatusCode.InternalServerError;
+                    return false;
                 }
 
                 OAuthShortcodeCheckResponse response = JsonConvert.DeserializeObject<OAuthShortcodeCheckResponse>(jsonResponse);
                 if (response.code != null)
                 {
                     OAuthShortcodeCheckResponse = response;
-                    return HttpStatusCode.OK;
+                    return true;
                 }
             }
             catch (WebException e)
             {
                 Log.Error($"Error checking shortcode. {e.Message}");
-                return (e.Response as HttpWebResponse)?.StatusCode ?? HttpStatusCode.InternalServerError;
             }
 
-            return HttpStatusCode.InternalServerError;
+            return false;
         }
 
         public static async Task<bool> GetOAuthToken()

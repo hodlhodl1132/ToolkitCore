@@ -159,26 +159,45 @@ namespace ToolkitCore.Windows
                 await Task.Delay(delay * 1000);
                 _globalTimer -= delay;
 
-                HttpStatusCode code = await ShortcodeUtilities.CheckShortcode();
-
-                switch (code)
+                try
                 {
-                    case HttpStatusCode.Forbidden:
-                        _currentPage = Pages.Denied;
-                        _currentStep = FlowSteps.AccessDenied;
-                        _globalTimer = -1;
-                        break;
-                    case HttpStatusCode.NotFound:
-                        _currentPage = Pages.TimedOut;
-                        _currentStep = FlowSteps.CodeExpired;
-                        _globalTimer = -1;
-                        break;
-                    case HttpStatusCode.OK:
+                    bool success = await ShortcodeUtilities.CheckShortcode();
+
+                    if (success)
+                    {
                         _currentStep = FlowSteps.AccessGranted;
                         _currentPage = Pages.AuthCode;
-                        _globalTimer = -1;
+                        _globalTimer = 0;
                         await GetOAuthToken();
-                        break;
+                    }
+                }
+                catch (WebException e)
+                {
+                    if (!(e.Response is HttpWebResponse response))
+                    {
+                        Log.Error("Response received wasn't a http response!");
+                        return;
+                    }
+
+                    switch (response.StatusCode)
+                    {
+                        case HttpStatusCode.NoContent:
+                        case HttpStatusCode.Forbidden:
+                            _currentPage = Pages.Denied;
+                            _currentStep = FlowSteps.AccessDenied;
+                            _globalTimer = -1;
+                            break;
+                        case HttpStatusCode.NotFound:
+                            _currentPage = Pages.TimedOut;
+                            _currentStep = FlowSteps.CodeExpired;
+                            _globalTimer = -1;
+                            break;
+                        default:
+                            _currentPage = Pages.Denied;
+                            _currentStep = FlowSteps.AccessDenied;
+                            _globalTimer = -1;
+                            break;
+                    }
                 }
             }
         }
@@ -216,7 +235,7 @@ namespace ToolkitCore.Windows
 
                         _currentPage = Pages.ShortCode;
                         _currentStep = FlowSteps.WaitingOnUser;
-                        _globalTimer = ShortcodeUtilities.OAuthShortcodeResponse.expires_in + Random.Range(1, 5);
+                        _globalTimer = ShortcodeUtilities.OAuthShortcodeResponse.expires_in;
                     }
                 );
 
