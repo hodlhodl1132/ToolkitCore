@@ -22,7 +22,7 @@ namespace ToolkitCore.Utilities
         {
             Log.Message($"{command.Username()}: {command.Message()} - Command: {command.Command()}");
 
-            ToolkitChatCommand toolkitChatCommand = ChatCommandController.GetChatCommand(command.Command());
+            ToolkitChatCommandWrapper toolkitChatCommand = ChatCommandController.GetChatCommand(command.Command());
 
             if (toolkitChatCommand != null)
             {

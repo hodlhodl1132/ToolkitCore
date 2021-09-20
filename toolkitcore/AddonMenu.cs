@@ -33,21 +33,15 @@ namespace ToolkitCore
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
             }),
-            new FloatMenuOption("Mixer", delegate ()
-            {
-                Window_Services window = new Window_Services(Window_Services.Tab.Mixer);
-                Find.WindowStack.TryRemove(window.GetType());
-                Find.WindowStack.Add(window);
-            }),
-            new FloatMenuOption("TestingMixer", delegate()
-            {
-                Dialog_MixerAuthWizard window = new Dialog_MixerAuthWizard();
-                Find.WindowStack.TryRemove(window.GetType());
-                Find.WindowStack.Add(window);
-            }),
             new FloatMenuOption("Message Log", delegate()
             {
                 Window_MessageLog window = new Window_MessageLog();
+                Find.WindowStack.TryRemove(window.GetType());
+                Find.WindowStack.Add(window);
+            }),
+            new FloatMenuOption("Commands", delegate()
+            {
+                Window_Commands window = new Window_Commands();
                 Find.WindowStack.TryRemove(window.GetType());
                 Find.WindowStack.Add(window);
             }),

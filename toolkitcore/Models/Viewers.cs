@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ToolkitCore.Database;
 using ToolkitCore.Interfaces;
-using ToolkitCore.Models.Mixer;
 using ToolkitCore.Models.Twitch;
 using Verse;
 using static ToolkitCore.Models.Services;
@@ -60,6 +59,23 @@ namespace ToolkitCore.Models
         public long LastSeenAt { get; set; }
 
         public int UserId { get; set; }
+
+        public List<string> Permissions { get; set; }
+
+        public bool HasPermission(string permission)
+        {
+            return Permissions.Contains(permission);
+        }
+
+        public void AddPermission(string permission)
+        {
+            Permissions.Add(permission);
+        }
+
+        public void RemovePermission(string permission)
+        {
+            Permissions.Remove(permission);
+        }
 
         public void UpdateLastSeenAt()
         {

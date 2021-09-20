@@ -4,5 +4,6 @@
     <defName>ToolkitCore</defName>
     <label>ToolkitCore</label>
     <menuClass>ToolkitCore.AddonMenu</menuClass>
+    <permissionsClass>ToolkitCore.ToolkitCorePermissions</permissionsClass>
   </ToolkitCore.Models.ToolkitAddon>
 </Defs>

@@ -10,8 +10,7 @@ namespace ToolkitCore.Models
     {
         public enum Service
         {
-            Twitch,
-            Mixer
+            Twitch
         }
     }
 }

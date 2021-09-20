@@ -70,7 +70,24 @@ namespace ToolkitCore.Models.Twitch
             {
                 return TwitchMessage.ChatMessage.IsBroadcaster;
             }
+            return false;
+        }
 
+        public bool IsSubscriber()
+        {
+            if (TwitchMessage.ChatMessage != null)
+            {
+                return TwitchMessage.ChatMessage.IsSubscriber;
+            }
+            return false;
+        }
+
+        public bool IsVIP()
+        {
+            if (TwitchMessage.ChatMessage != null)
+            {
+                return TwitchMessage.ChatMessage.IsVip;
+            }
             return false;
         }
 

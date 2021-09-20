@@ -17,9 +17,16 @@ namespace ToolkitCore.Models
 
         public Type menuClass = typeof(IAddonMenu);
 
+        public Type permissionsClass = typeof(PermissionsWrapper);
+
         public IAddonMenu GetAddonMenu()
         {
             return Activator.CreateInstance(menuClass) as IAddonMenu;
+        }
+
+        public PermissionsWrapper GetPermissionsWrapper()
+        {
+            return Activator.CreateInstance(permissionsClass) as PermissionsWrapper;
         }
     }
 }

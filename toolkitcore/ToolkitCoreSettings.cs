@@ -17,14 +17,6 @@ namespace ToolkitCore
         public static string twitchOauthToken = "";
         public static bool twitchConnectOnStartup = false;
 
-        // Mixer
-        public static string mixerAccessToken = "";
-        public static string mixerRefreshToken = "";
-        public static string mixerUsername = "";
-        public static bool mixerConnectOnStartup = false;
-
-        internal static string mixerClientID = "405b869d155f40d8bde397cd1d25695206b3633b9e1bb4fa";
-
         public override void ExposeData()
         {
             // Global
@@ -37,12 +29,6 @@ namespace ToolkitCore
             Scribe_Values.Look(ref twitchBotUsername, "twitchBotUsername", "");
             Scribe_Values.Look(ref twitchOauthToken, "twitchOauthToken", "");
             Scribe_Values.Look(ref twitchConnectOnStartup, "twitchConnectOnStartup", false);
-
-            // Mixer
-            Scribe_Values.Look(ref mixerAccessToken, "mixerAccessToken");
-            Scribe_Values.Look(ref mixerRefreshToken, "mixerRefreshToken");
-            Scribe_Values.Look(ref mixerUsername, "mixerUsername");
-            Scribe_Values.Look(ref mixerConnectOnStartup, "mixerAutoConnect", false);
         }
     }
 }

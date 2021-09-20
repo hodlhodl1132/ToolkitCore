@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,8 @@ using Verse;
 
 namespace ToolkitCore.Models
 {
-    public class ToolkitChatCommand : Def, IExposable
+    [Serializable]
+    public class ToolkitChatCommand : Def
     {
         public string commandText;
 
@@ -19,9 +21,7 @@ namespace ToolkitCore.Models
 
         public Type commandClass;
 
-        public bool requiresMod;
-
-        public bool requiresBroadcaster;
+        public Role permissionRole;
 
         public bool TryExecute(ICommand command)
         {
@@ -40,14 +40,24 @@ namespace ToolkitCore.Models
 
             return true;
         }
+    }
 
-        public void ExposeData()
+    [JsonObject(MemberSerialization.OptIn)]
+    public class ToolkitChatCommandWrapper
+    {
+        [JsonProperty]
+        public string CommandText { get; set; }
+        [JsonProperty]
+        public bool Enabled { get; set; }
+        [JsonProperty]
+        public Role PermissionRole { get; set; }
+        [JsonProperty]
+        public string DefName { get; set; }
+        public ToolkitChatCommand Def { get; set; }
+
+        public bool TryExecute(ICommand command)
         {
-            Scribe_Values.Look(ref commandText, "commandText", "helloworld");
-            Scribe_Values.Look(ref enabled, "enabled", true);
-            Scribe_Values.Look(ref commandClass, "commandClass", typeof(CommandMethod));
-            Scribe_Values.Look(ref requiresMod, "requiresMod", false);
-            Scribe_Values.Look(ref requiresBroadcaster, "requiresBroadcaster", false);
+            return this.Def.TryExecute(command);
         }
     }
 }

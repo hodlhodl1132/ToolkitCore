@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -30,8 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.1.2575" />
-    <PackageReference Include="Lib.Harmony" Version="2.0.0.8" ExcludeAssets="runtime" />
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.3.3102" />
+    <PackageReference Include="Lib.Harmony" Version="2.1.1" ExcludeAssets="runtime">
+      <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AddonMenu.cs" />
@@ -46,26 +48,8 @@
     <Compile Include="Interfaces\ICommand.cs" />
     <Compile Include="Interfaces\IMessage.cs" />
     <Compile Include="MessageInterfaceBase.cs" />
-    <Compile Include="MixerWrapper.cs" />
     <Compile Include="Models\MessageLog.cs" />
-    <Compile Include="Models\Mixer\AuthKeyResponse.cs" />
-    <Compile Include="Models\Mixer\AuthMethod.cs" />
-    <Compile Include="Models\Mixer\ChannelResponse.cs" />
-    <Compile Include="Models\Mixer\ChatCommandEvent.cs" />
-    <Compile Include="Models\Mixer\ChatMessageEvent.cs" />
-    <Compile Include="Models\Mixer\ChatMethod.cs" />
-    <Compile Include="Models\Mixer\MixerAuthReply.cs" />
-    <Compile Include="Models\Mixer\MixerEvent.cs" />
-    <Compile Include="Models\Mixer\MixerReply.cs" />
-    <Compile Include="Models\Mixer\MixerWebSocketClient.cs" />
-    <Compile Include="Models\Mixer\MsgMethod.cs" />
-    <Compile Include="Models\Mixer\OnMessageEventArgs.cs" />
-    <Compile Include="Models\Mixer\ShortcodeOAuth\OAuthShortcodeCheckResponse.cs" />
-    <Compile Include="Models\Mixer\ShortcodeOAuth\OAuthShortcodeRequest.cs" />
-    <Compile Include="Models\Mixer\ShortcodeOAuth\OAuthShortcodeResponse.cs" />
-    <Compile Include="Models\Mixer\ShortcodeOAuth\OAuthTokenRequest.cs" />
-    <Compile Include="Models\Mixer\ShortcodeOAuth\OAuthTokenResponse.cs" />
-    <Compile Include="Models\Mixer\ShortcodeOAuth\ShortcodeUtilities.cs" />
+    <Compile Include="Models\Permissions.cs" />
     <Compile Include="Models\Viewers.cs" />
     <Compile Include="Models\Services.cs" />
     <Compile Include="Models\ToolkitAddon.cs" />
@@ -73,6 +57,7 @@
     <Compile Include="Models\CommandMethod.cs" />
     <Compile Include="Models\Twitch\ChatMessageEvent.cs" />
     <Compile Include="Models\Twitch\ChatCommandEvent.cs" />
+    <Compile Include="ToolkitCorePermissions.cs" />
     <Compile Include="TwitchWrapper.cs" />
     <Compile Include="ToolkitCore.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,11 +70,11 @@
     <Compile Include="Utilities\AddonRegistry.cs" />
     <Compile Include="Utilities\CommandFilter.cs" />
     <Compile Include="Utilities\TCText.cs" />
-    <Compile Include="Windows\Dialog_MixerAuthWizard.cs" />
     <Compile Include="Windows\GlobalSettingsWidget.cs" />
     <Compile Include="Windows\MainTabWindow_ToolkitCore.cs" />
-    <Compile Include="Windows\MixerSettingsWidget.cs" />
     <Compile Include="Windows\TwitchSettingsWidget.cs" />
+    <Compile Include="Windows\Utility\Dialog_TextEntry.cs" />
+    <Compile Include="Windows\Window_Commands.cs" />
     <Compile Include="Windows\Window_MessageLog.cs" />
     <Compile Include="Windows\Window_ModSettings.cs" />
     <Compile Include="Windows\Window_Services.cs" />
@@ -113,7 +98,10 @@
     <PostBuildEvent>$(NuGetPackageFolders)nuget.commandline\$(NuGetCommandLineVersion)\tools\nuget.exe pack $(ProjectDir)ToolkitCore.nuspec -OutputDirectory $(ProjectDir)</PostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="NuGet.CommandLine" Version="$(NuGetCommandLineVersion)" />
+    <PackageReference Include="NuGet.CommandLine" Version="5.10.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

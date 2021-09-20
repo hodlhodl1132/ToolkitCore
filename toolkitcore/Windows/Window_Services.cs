@@ -87,9 +87,6 @@ namespace ToolkitCore.Windows
                 case Tab.Twitch:
                     TwitchSettingsWidget.OnGUI(innerContentRect);
                     break;
-                case Tab.Mixer:
-                    MixerSettingsWidget.OnGUI(innerContentRect);
-                    break;
             }
 
             GUI.EndGroup();
@@ -124,26 +121,6 @@ namespace ToolkitCore.Windows
                         {
                             TwitchWrapper.Client?.Disconnect();
                             TwitchWrapper.StartAsync();
-                        }
-                    }
-                }
-            );
-            tabsList.Add(
-                new TabWidget
-                {
-                    Label = "Mixer",
-                    OnClick = () => tab = Tab.Mixer,
-                    IsSelected = () => tab == Tab.Mixer,
-                    GetStatus = MixerWrapper.Connected,
-                    OnStatusClick = () =>
-                    {
-                        if (MixerWrapper.Connected())
-                        {
-
-                        }
-                        else
-                        {
-                            MixerWrapper.InitializeClient();
                         }
                     }
                 }

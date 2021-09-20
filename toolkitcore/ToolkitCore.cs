@@ -14,6 +14,7 @@ namespace ToolkitCore
 {
     public class ToolkitCore : Mod
     {
+        public static bool DEBUG = true;
         public static ToolkitCoreSettings settings;
 
         public ToolkitCore(ModContentPack content) : base(content)
@@ -46,11 +47,6 @@ namespace ToolkitCore
             if (ToolkitCoreSettings.twitchConnectOnStartup)
             {
                 TwitchWrapper.StartAsync();
-            }
-
-            if (ToolkitCoreSettings.mixerConnectOnStartup)
-            {
-                MixerWrapper.InitializeClient();
             }
         }
     }

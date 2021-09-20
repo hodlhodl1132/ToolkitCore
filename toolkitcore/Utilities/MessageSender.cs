@@ -26,18 +26,6 @@ namespace ToolkitCore.Utilities
                     TwitchWrapper.SendChatMessage(message);
 
                     return true;
-
-                case Service.Mixer:
-
-                    if (!MixerWrapper.Connected())
-                    {
-                        Log.Error("Tried to send message to mixer but not connected to mixer. Message: " + message);
-                        return false;
-                    }
-
-                    MixerWrapper.SendChatMessage(message);
-
-                    return true;
             }
 
             Log.Error("Tried to send message but failed. Message: " + message);
