@@ -36,5 +36,21 @@ namespace ToolkitCore.Controllers
                 UserId = userId
             };
         }
+
+        public static bool ViewerExistsByID(Service service, int ID)
+        {
+            return GetViewerByID(service, ID) != null;
+        }
+
+        public static Viewer GetViewerByID(Service service, int ID)
+        {
+            if (ViewerList.Instance.All == null)
+            {
+                ViewerList.Instance.All = new List<Viewer>();
+                return null;
+            }
+
+            return ViewerList.Instance.All.Find((v) => v.Service == service && v.UserId == ID);
+        }
     }
 }
