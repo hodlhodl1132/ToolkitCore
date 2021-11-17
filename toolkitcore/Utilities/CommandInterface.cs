@@ -29,6 +29,17 @@ namespace ToolkitCore.Utilities
                 toolkitChatCommand.TryExecute(command);
             }
 
+
+            if (ViewerController.ViewerExistsByID(command.Service(), command.UserId()))
+            {
+                ViewerController.GetViewerByID(command.Service(), command.UserId()).UpdateViewerFromMessage(command);
+            }
+            else
+            {
+                ViewerController.CreateViewer(command.Service(), command.Username(), command.UserId()).UpdateViewerFromMessage(command);
+            }
+
+            /*
             if (ViewerController.ViewerExists(command.Service(), command.Username()))
             {
                 ViewerController.GetViewer(command.Service(), command.Username()).UpdateViewerFromMessage(command);
@@ -37,6 +48,7 @@ namespace ToolkitCore.Utilities
             {
                 ViewerController.CreateViewer(command.Service(), command.Username(), command.UserId()).UpdateViewerFromMessage(command);
             }
+            */
 
             MessageLogger.LogMessage(command);
         }

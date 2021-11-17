@@ -20,6 +20,17 @@ namespace ToolkitCore.Utilities
 
         public override void ParseMessage(IMessage message)
         {
+
+            if(ViewerController.ViewerExistsByID(message.Service(), message.UserId()))
+            {
+                ViewerController.GetViewerByID(message.Service(), message.UserId()).UpdateViewerFromMessage(message);
+            }
+            else
+            {
+                ViewerController.CreateViewer(message.Service(), message.Username(), message.UserId()).UpdateViewerFromMessage(message);
+            }
+
+            /*
             if (ViewerController.ViewerExists(message.Service(), message.Username()))
             {
                 ViewerController.GetViewer(message.Service(), message.Username()).UpdateViewerFromMessage(message);
@@ -28,6 +39,7 @@ namespace ToolkitCore.Utilities
             {
                 ViewerController.CreateViewer(message.Service(), message.Username(), message.UserId()).UpdateViewerFromMessage(message);
             }
+            */
 
             MessageLogger.LogMessage(message);
         }
